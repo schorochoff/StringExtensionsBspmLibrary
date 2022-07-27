@@ -6,7 +6,10 @@
 trigger:
 - master
 
-pool: Azure Pipelines
+pool:
+    vmImage: 'windows-latest'
+
+
 
 variables:
   solution: '**/*.sln'
@@ -14,19 +17,5 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
+  - script: echo hello from Windows
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
