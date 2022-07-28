@@ -14,8 +14,8 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   major: '1'
-  minor: '1'
-  revision: $[counter('', 10)]
+  minor: '2'
+  revision: $[counter('', 100)]
 
   # Build.BuildNumber
 name: '$(major).$(minor).$(revision)'
@@ -49,19 +49,19 @@ steps:
     configuration: '$(buildConfiguration)'
 
 # Publish to Artifact 'drop'
-- task: PublishBuildArtifacts@1
-  displayName: Publish Artifact to Drop
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+#- task: PublishBuildArtifacts@1
+#  displayName: Publish Artifact to Drop
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#    ArtifactName: 'drop'
+#    publishLocation: 'Container'
 
 # Package a project
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
-    versioningScheme: byPrereleaseNumber
+    versioningScheme: byBuildNumber
     majorVersion: '$(major)'
     minorVersion: '$(minor)'
     patchVersion: '$(revision)'
