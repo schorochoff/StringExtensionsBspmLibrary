@@ -6,7 +6,11 @@
 trigger:
 - master
 
-pool: Default
+pool: 
+  name: Default
+  demands:
+  - msbuild
+  - visualstudio
 
 variables:
   solution: '**/*.sln'
@@ -17,18 +21,9 @@ variables:
   Patch: '0'
 
 steps:
-
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: VSBuild@1
   inputs:
-    command: pack
-    versioningScheme: byPrereleaseNumber
-    majorVersion: '$(Major)'
-    minorVersion: '$(Minor)'
-    patchVersion: '$(Patch)'
-    packagesToPack: '**/*.csproj'
-    packDestination: '$(Build.ArtifactStagingDirectory)'
+    solution: '**\*.sln' 
 
 
 
