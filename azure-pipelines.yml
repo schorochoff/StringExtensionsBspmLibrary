@@ -17,9 +17,9 @@ variables:
   Patch: '0'
 
 steps:
+
 - task: NuGetToolInstaller@1
 
-steps:
 - task: NuGetCommand@2
   inputs:
     command: pack
@@ -29,7 +29,6 @@ steps:
     patchVersion: '$(Patch)'
     packagesToPack: '**/*.csproj'
     packDestination: '$(Build.ArtifactStagingDirectory)'
-
 
 
 
