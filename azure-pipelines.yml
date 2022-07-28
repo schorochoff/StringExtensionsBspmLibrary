@@ -21,21 +21,25 @@ variables:
 name: '$(major).$(minor).$(revision)'
 
 steps:
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 3.x'
-  inputs:
-    packageType: sdk
-    version: 3.x
+#- task: UseDotNet@2
+#  displayName: 'Use .NET Core sdk 3.x'
+#  inputs:
+#    packageType: sdk
+#    version: 3.x
 
 #Nuget TODO
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: 
+    checkLatest: true
 
 # Build StringExtensionsBspmLibrary.sln
-- task: VSBuild@1
-  displayName: 'Build Mecar.AllPersons'
-  inputs:
-    solution: '**/StringExtensionsBspmLibrary.sln'
-    msbuildArgs: '/clp:ErrorsOnly'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+#- task: VSBuild@1
+#  displayName: 'Build Mecar.AllPersons'
+#  inputs:
+#    solution: '**/StringExtensionsBspmLibrary.sln'
+#    msbuildArgs: '/clp:ErrorsOnly'
+#    platform: '$(buildPlatform)'
+#    configuration: '$(buildConfiguration)'
 
 
