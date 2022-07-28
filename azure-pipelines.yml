@@ -27,7 +27,6 @@ steps:
     packageType: sdk
     version: 3.x
 
-#Nuget TODO
 - task: NuGetToolInstaller@1
   inputs:
     versionSpec: 
@@ -64,9 +63,9 @@ steps:
     packagesToPack: '**/*.csproj'
     versioningScheme: 'off'
 
+# Push a project
 - task: NuGetCommand@2
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: '2427c367-2017-467d-a414-8a14e0c5bd96'
+    publishVstsFeed: 'sophieschorochoff'
