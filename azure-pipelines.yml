@@ -6,40 +6,10 @@
 trigger:
 - master
 
-pool: 
-  name: Default
-
-variables:
-  solution: '**/StringExtensionsBspmLibrary.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-  major: '1'
-  minor: '0'
-  revision: $[counter('', 50)]
-
-  # Build.BuildNumber
-name: '$(major).$(minor).$(revision)'
+pool:
+    vmImage: 'windows-2019'
 
 steps:
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 3.x'
-  inputs:
-    packageType: sdk
-    version: 3.x
-
-#Nuget TODO
-- task: NuGetToolInstaller@1
-  inputs:
-    versionSpec: 
-    checkLatest: true
-
-# Build StringExtensionsBspmLibrary.sln
-- task: VSBuild@1
-  displayName: 'Build StringExtensions'
-  inputs:
-    solution: '**/StringExtensionsBspmLibrary.sln'
-    msbuildArgs: '/clp:ErrorsOnly'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  - script: echo hello from Windows
 
 
