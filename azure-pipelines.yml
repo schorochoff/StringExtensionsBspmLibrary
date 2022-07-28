@@ -1,0 +1,43 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+trigger:
+- master
+
+pool: 
+  name: Default
+
+variables:
+  solution: '**/StringExtensionsBspmLibrary.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  major: '1'
+  minor: '0'
+  revision: $[counter('', 50)]
+
+  # Build.BuildNumber
+name: '$(major).$(minor).$(revision)'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 3.x'
+  inputs:
+    packageType: sdk
+    version: 3.x
+
+#Nuget TODO
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: 
+    checkLatest: true
+
+# Build StringExtensionsBspmLibrary.sln
+- task: VSBuild@1
+  displayName: 'Build StringExtensions'
+  inputs:
+    solution: '**/StringExtensionsBspmLibrary.sln'
+    msbuildArgs: '/clp:ErrorsOnly'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
