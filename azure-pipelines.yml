@@ -18,7 +18,7 @@ variables:
   revision: $[counter('', 50)]
 
   # Build.BuildNumber
-name: '$(major).$(minor).$(revision)'
+name: '$(major).$(minor).$(Rev:r)'
 
 steps:
 - task: UseDotNet@2
