@@ -1,7 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Schorochoff Sophie</Authors>
+    <Company>Oniryx</Company>
+    <PackageId>StringExtensionsBspmLibrary2_Schorochoff</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Product>StringExtensionsBspmLibrary</Product>
+    <Nullable>enable</Nullable>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 </Project>
