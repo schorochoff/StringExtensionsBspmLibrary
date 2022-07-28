@@ -62,7 +62,7 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
-    packDestination: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: 'off'
 
 - task: NuGetCommand@2
   inputs:
