@@ -1,5 +1,8 @@
-﻿namespace StringExtensionsBspmLibraryTests
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace StringExtensionsBspmLibraryTests
 {
+    [TestClass]
     class StringExtensionsGeneralTests
     {
         //[TestMethod]

@@ -2,34 +2,65 @@
 {
     public static partial class StringExtensions
     {
-        #region Try Parse
+        #region Try Parse Numbers
 
-        ///// <summary>
-        ///// Try to parse the value to an integer.
-        ///// Returns default value if <paramref name="value"/> can't be parsed into a int.
-        ///// 
-        ///// Example
-        ///// "42" -> 42
-        ///// "" -> null
-        ///// "Hello" ->  null
-        ///// "60A" -> null
-        ///// "  4 5 " -> ?
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static int? TryParseToInt(this string? value)
-        //{
-        //    if (value == null)
-        //    {
-        //        return default;
-        //    }
-        //    else
-        //    {
-        //        var success = int.TryParse(value, out int result);
-        //        return success ? result : (int?)null;
-        //    }
-        //}
+        /// <summary>
+        /// Try to parse the value to an integer.
+        /// Returns default value if <paramref name="value"/> can't be parsed into a int.
+        /// 
+        /// Examples :
+        /// "42" -> 42
+        /// "-55" -> -55
+        /// "- 88" -> -88 ??
+        /// "  1 2 3 " -> ?
+        /// "" -> null
+        /// "Hello" ->  null
+        /// "60A" -> null
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int? TryParseToInt(this string? value)
+        {
+            if (value == null)
+            {
+                return default;
+            }
+            else
+            {
+                var success = int.TryParse(value, out int result);
+                return success ? result : (int?)null;
+            }
+        }
 
+        /// <summary>
+        /// Try to parse the value to a long.
+        /// Returns default value if <paramref name="value"/> can't be parsed into a long.
+        /// 
+        /// Examples :
+        /// "42" -> 42
+        /// "9223372036854775807" -> 9223372036854775807
+        /// "-55" -> -55
+        /// "- 88" -> -88 ??
+        /// "  1 2 3 " -> ?
+        /// "" -> null
+        /// "Hello" ->  null
+        /// "60A" -> null
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static long? TryParseToLong(this string? value)
+
+        {
+            if (value == null)
+            {
+                return default;
+            }
+            else
+            {
+                var success = long.TryParse(value, out long result);
+                return success ? result : (long?)null;
+            }
+        }
 
         ///// <summary>
         ///// Try to parse the value to a decimal.
@@ -51,25 +82,7 @@
         //    }
         //}
 
-        ///// <summary>
-        ///// Try to parse the value to a long.
-        ///// Returns default value if an error occured.
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static long? TryParseToLong(this string? value)
 
-        //{
-        //    if (value == null)
-        //    {
-        //        return default;
-        //    }
-        //    else
-        //    {
-        //        var success = long.TryParse(value, out long result);
-        //        return success ? result : (long?)null;
-        //    }
-        //}
 
         #endregion
 

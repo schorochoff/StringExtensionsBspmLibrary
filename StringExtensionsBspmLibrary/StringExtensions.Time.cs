@@ -1,4 +1,7 @@
-﻿namespace StringExtensionsBspmLibrary
+﻿using System;
+using System.Text.RegularExpressions;
+
+namespace StringExtensionsBspmLibrary
 {
     public static partial class StringExtensions
     {
