@@ -4,63 +4,63 @@
     {
         #region Try Parse Numbers
 
-        /// <summary>
-        /// Try to parse the value to an integer.
-        /// Returns default value if <paramref name="value"/> can't be parsed into a int.
-        /// 
-        /// Examples :
-        /// "42" -> 42
-        /// "-55" -> -55
-        /// "- 88" -> -88 ??
-        /// "  1 2 3 " -> ?
-        /// "" -> null
-        /// "Hello" ->  null
-        /// "60A" -> null
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static int? TryParseToInt(this string? value)
-        {
-            if (value == null)
-            {
-                return default;
-            }
-            else
-            {
-                var isSuccess = int.TryParse(value, out int result);
-                return isSuccess ? result : (int?)null;
-            }
-        }
+        ///// <summary>
+        ///// Try to parse the value to an integer.
+        ///// Returns default value if <paramref name="value"/> can't be parsed into a int.
+        ///// 
+        ///// Examples :
+        ///// "42" -> 42
+        ///// "-55" -> -55
+        ///// "- 88" -> -88 ??
+        ///// "  1 2 3 " -> ?
+        ///// "" -> null
+        ///// "Hello" ->  null
+        ///// "60A" -> null
+        ///// </summary>
+        ///// <param name="value"></param>
+        ///// <returns></returns>
+        //public static int? TryParseToInt(this string? value)
+        //{
+        //    if (value == null)
+        //    {
+        //        return default;
+        //    }
+        //    else
+        //    {
+        //        var isSuccess = int.TryParse(value, out int result);
+        //        return isSuccess ? result : (int?)null;
+        //    }
+        //}
 
-        /// <summary>
-        /// Try to parse the value to a long.
-        /// Returns default value if <paramref name="value"/> can't be parsed into a long.
-        /// 
-        /// Examples :
-        /// "42" -> 42
-        /// "9223372036854775807" -> 9223372036854775807
-        /// "-55" -> -55
-        /// "- 88" -> -88 ??
-        /// "  1 2 3 " -> ?
-        /// "" -> null
-        /// "Hello" ->  null
-        /// "60A" -> null
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static long? TryParseToLong(this string? value)
+        ///// <summary>
+        ///// Try to parse the value to a long.
+        ///// Returns default value if <paramref name="value"/> can't be parsed into a long.
+        ///// 
+        ///// Examples :
+        ///// "42" -> 42
+        ///// "9223372036854775807" -> 9223372036854775807
+        ///// "-55" -> -55
+        ///// "- 88" -> -88 ??
+        ///// "  1 2 3 " -> ?
+        ///// "" -> null
+        ///// "Hello" ->  null
+        ///// "60A" -> null
+        ///// </summary>
+        ///// <param name="value"></param>
+        ///// <returns></returns>
+        //public static long? TryParseToLong(this string? value)
 
-        {
-            if (value == null)
-            {
-                return default;
-            }
-            else
-            {
-                var isSuccess = long.TryParse(value, out long result);
-                return isSuccess ? result : (long?)null;
-            }
-        }
+        //{
+        //    if (value == null)
+        //    {
+        //        return default;
+        //    }
+        //    else
+        //    {
+        //        var isSuccess = long.TryParse(value, out long result);
+        //        return isSuccess ? result : (long?)null;
+        //    }
+        //}
 
         ///// <summary>
         ///// Try to parse the value to a decimal.
