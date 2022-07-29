@@ -27,8 +27,8 @@
             }
             else
             {
-                var success = int.TryParse(value, out int result);
-                return success ? result : (int?)null;
+                var isSuccess = int.TryParse(value, out int result);
+                return isSuccess ? result : (int?)null;
             }
         }
 
@@ -57,8 +57,8 @@
             }
             else
             {
-                var success = long.TryParse(value, out long result);
-                return success ? result : (long?)null;
+                var isSuccess = long.TryParse(value, out long result);
+                return isSuccess ? result : (long?)null;
             }
         }
 
