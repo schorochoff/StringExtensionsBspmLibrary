@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringExtensionsBspmLibrary", "StringExtensionsBspmLibrary\StringExtensionsBspmLibrary.csproj", "{510F27C5-0482-446E-A6C5-5DB70C3AF5A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringExtensionsBspmLibraryTests", "StringExtensionsBspmLibraryTests\StringExtensionsBspmLibraryTests.csproj", "{C0D6C221-F244-4369-9E7B-83604A399ABD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{510F27C5-0482-446E-A6C5-5DB70C3AF5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{510F27C5-0482-446E-A6C5-5DB70C3AF5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{510F27C5-0482-446E-A6C5-5DB70C3AF5A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C0D6C221-F244-4369-9E7B-83604A399ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0D6C221-F244-4369-9E7B-83604A399ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0D6C221-F244-4369-9E7B-83604A399ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0D6C221-F244-4369-9E7B-83604A399ABD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
