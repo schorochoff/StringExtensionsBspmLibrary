@@ -1,86 +1,104 @@
-﻿namespace StringExtensionsBspmLibrary
+﻿using System;
+using System.Globalization;
+
+namespace StringExtensionsBspmLibrary
 {
     public static partial class StringExtensions
     {
         #region Try Parse Numbers
 
-        ///// <summary>
-        ///// Try to parse the value to an integer.
-        ///// Returns default value if <paramref name="value"/> can't be parsed into a int.
-        ///// 
-        ///// Examples :
-        ///// "42" -> 42
-        ///// "-55" -> -55
-        ///// "- 88" -> -88 ??
-        ///// "  1 2 3 " -> ?
-        ///// "" -> null
-        ///// "Hello" ->  null
-        ///// "60A" -> null
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static int? TryParseToInt(this string? value)
-        //{
-        //    if (value == null)
-        //    {
-        //        return default;
-        //    }
-        //    else
-        //    {
-        //        var isSuccess = int.TryParse(value, out int result);
-        //        return isSuccess ? result : (int?)null;
-        //    }
-        //}
+        /// <summary>
+        /// Try to parse the value to an integer.
+        /// Returns default value if <paramref name="value"/> can't be parsed into a int.
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="style">NumberStyle as define by int.TryParse</param>
+        /// <param name="provider">IFormatProvider as define by int.TryParse</param>
+        /// <returns></returns>
+        public static int? TryParseToInt(this string? value, NumberStyles? style = null, IFormatProvider? provider = null)
+        {
+            if (value == null)
+            {
+                return default;
+            }
+            else
+            {
+                bool isSuccess;
+                int result;
+                if (style != null)
+                {
+                    isSuccess = int.TryParse(value, style.Value, provider, out result);
+                }
+                else
+                {
+                    isSuccess = int.TryParse(value, out result);
+                }
+                return isSuccess ? result : (int?)null;
+            }
+        }
 
-        ///// <summary>
-        ///// Try to parse the value to a long.
-        ///// Returns default value if <paramref name="value"/> can't be parsed into a long.
-        ///// 
-        ///// Examples :
-        ///// "42" -> 42
-        ///// "9223372036854775807" -> 9223372036854775807
-        ///// "-55" -> -55
-        ///// "- 88" -> -88 ??
-        ///// "  1 2 3 " -> ?
-        ///// "" -> null
-        ///// "Hello" ->  null
-        ///// "60A" -> null
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static long? TryParseToLong(this string? value)
+        /// <summary>
+        /// Try to parse the value to a long.
+        /// Returns default value if <paramref name="value"/> can't be parsed into a long.
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="style">NumberStyle as define by long.TryParse</param>
+        /// <param name="provider">IFormatProvider as define by long.TryParse</param>
+        /// <returns></returns>
+        public static long? TryParseToLong(this string? value, NumberStyles? style = null, IFormatProvider? provider = null)
+        {
+            if (value == null)
+            {
+                return default;
+            }
+            else
+            {
+                bool isSuccess;
+                long result;
+                if (style != null)
+                {
+                    isSuccess = long.TryParse(value, style.Value, provider, out result);
+                }
+                else
+                {
+                    isSuccess = long.TryParse(value, out result);
+                }
+                return isSuccess ? result : (long?)null;
+            }
+        }
 
-        //{
-        //    if (value == null)
-        //    {
-        //        return default;
-        //    }
-        //    else
-        //    {
-        //        var isSuccess = long.TryParse(value, out long result);
-        //        return isSuccess ? result : (long?)null;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Try to parse the value to a decimal.
-        ///// Returns default value if an error occured.
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static decimal? TryParseToDecimal(this string? value)
-        //{
-        //    if (value == null)
-        //    {
-        //        return default;
-        //    }
-        //    else
-        //    {
-        //        var success = decimal.TryParse(value, out decimal result);
-        //        return success ? result : (decimal?)null;
-        //    }
-        //}
+        /// <summary>
+        /// Try to parse the value to a decimal.
+        /// Returns default value if <paramref name="value"/> can't be parsed into a decimal.
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="style">NumberStyle as define by decimal.TryParse</param>
+        /// <param name="provider">IFormatProvider as define by decimal.TryParse</param>
+        /// <returns></returns>
+        public static decimal? TryParseToDecimal(this string? value, NumberStyles? style = null, IFormatProvider? provider = null)
+        {
+            if (value == null)
+            {
+                return default;
+            }
+            else
+            {
+                bool isSuccess;
+                decimal result;
+                if (style != null)
+                {
+                    isSuccess = decimal.TryParse(value, style.Value, provider, out result);
+                }
+                else
+                {
+                    isSuccess = decimal.TryParse(value, out result);
+                }
+                return isSuccess ? result : (decimal?)null;
+            }
+        }
 
 
 
