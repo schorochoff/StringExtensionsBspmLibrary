@@ -35,7 +35,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/*.sln'
+    restoreSolution: '**/StringExtensionsBspmLibrary.sln'
     feedsToUse: 'select'
     vstsFeed: '2427c367-2017-467d-a414-8a14e0c5bd96'
 
@@ -60,7 +60,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packagesToPack: '**/*.csproj'
+    packagesToPack: '**/StringExtensionsBspmLibrary.csproj'
     versioningScheme: byBuildNumber
     majorVersion: '$(major)'
     minorVersion: '$(minor)'
