@@ -27,17 +27,19 @@ steps:
     packageType: sdk
     version: 3.x
 
+# Nuget
 - task: NuGetToolInstaller@1
   inputs:
     versionSpec: 
     checkLatest: true
 
+# Restore Nuget
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
     restoreSolution: '**/StringExtensionsBspmLibrary.sln'
     feedsToUse: 'select'
-    vstsFeed: '2427c367-2017-467d-a414-8a14e0c5bd96'
+    vstsFeed: '7d4fb428-f204-4d3e-a647-c8b5439e541e'
 
 # Build StringExtensionsBspmLibrary.sln
 - task: VSBuild@1
