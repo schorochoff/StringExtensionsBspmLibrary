@@ -32,6 +32,24 @@
         //}
 
         ///// <summary>
+        ///// Returns the first N characters.
+        ///// </summary>
+        ///// <param name="value"></param>
+        ///// <param name="length"></param>
+        ///// <param name="withEllipsis"></param>
+        ///// <returns></returns>
+        //public static string Left(this string value, int length, bool withEllipsis)
+        //{
+        //    if (value == null)
+        //        return string.Empty;
+
+        //    if (withEllipsis && value.Length > length)
+        //        return value.Left(length - 3) + "...";
+        //    else
+        //        return value.Left(length);
+        //}
+
+        ///// <summary>
         ///// Return null if <paramref name="value"/> is null or empty. Return <paramref name="value"/> otherwize
         ///// </summary>
         ///// <param name="value"></param>
@@ -368,6 +386,5 @@
         //{
         //    return String.Compare(source, value, CultureInfo.CurrentCulture, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0;
         //}
-
     }
 }

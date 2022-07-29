@@ -1,9 +1,10 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace StringExtensionsBspmLibraryTests
 {
+
     [TestClass]
-    public class StringExtensionsTimeTests
+    class StringExtensionsNumberTests
     {
         //[TestMethod]
         //public void TimeSpanExtensions_Time_ToTimeSpan()
@@ -29,10 +30,44 @@ namespace StringExtensionsBspmLibraryTests
         //}
 
         //[TestMethod]
-        //public void StringExtensions_ToInvariantCulture()
+        //public void StringExtensions_KeepDigitsOnly()
         //{
-        //    var date = DateTime.Parse("2021-05-31", new CultureInfo("nl-NL"));
-        //    Assert.AreEqual("31/05/2021", date.ToInvariantString());
+        //    Assert.AreEqual("", "".KeepDigitsOnly());
+        //    Assert.AreEqual("123456", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepDigitsOnly());
+        //}
+
+        //[TestMethod]
+        //public void StringExtensions_TryParseToInt()
+        //{
+        //    Assert.AreEqual(-100, "-100".TryParseToInt());
+        //    Assert.AreEqual(0, "0".TryParseToInt());
+        //    Assert.AreEqual(5, "5".TryParseToInt());
+        //}
+
+        //[TestMethod]
+        //public void StringExtensions_TryParseToInt_InvalidValues()
+        //{
+        //    Assert.AreEqual(null, "abc".TryParseToInt());
+        //    Assert.AreEqual(null, "zzz123".TryParseToInt());
+        //    Assert.AreEqual(null, "123zzz".TryParseToInt());
+        //}
+
+        //[TestMethod]
+        //public void StringExtensions_TryParseToLong()
+        //{
+        //    Assert.AreEqual(-100, "-100".TryParseToLong());
+        //    Assert.AreEqual(0, "0".TryParseToLong());
+        //    Assert.AreEqual(5, "5".TryParseToLong());
+        //    Assert.AreEqual(-9223372036854775808, "-9223372036854775808".TryParseToLong());
+        //    Assert.AreEqual(9223372036854775807, "9223372036854775807".TryParseToLong());
+        //}
+
+        //[TestMethod]
+        //public void StringExtensions_TryParseToLong_InvalidValues()
+        //{
+        //    Assert.AreEqual(null, "abc".TryParseToLong());
+        //    Assert.AreEqual(null, "zzz123".TryParseToLong());
+        //    Assert.AreEqual(null, "123zzz".TryParseToLong());
         //}
     }
 }
