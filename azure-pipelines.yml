@@ -51,15 +51,9 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/StringExtensionsBspmLibrary.csproj'
+    restoreSolution: '$(solution)'
     feedsToUse: 'select'
     vstsFeed: '7d4fb428-f204-4d3e-a647-c8b5439e541e'
-    
-- task: NuGetCommand@2
-  inputs:
-    command: 'restore'
-    restoreSolution: '**/StringExtensionsBspmLibraryTests.csproj'
-    feedsToUse: 'select'
 
 # Build StringExtensionsBspmLibrary.sln
 - task: VSBuild@1
