@@ -50,6 +50,32 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+# # Test (including PDB) and generate Code Coverage
+# - task: DotNetCoreCLI@2
+#   displayName: 'Test and Code Coverage'
+#   inputs:
+#     command: test
+#     projects: '**/*[Tt]ests/*.csproj'
+#     arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:DebugType=Full'
+#     publishTestResults: true
+
+
+# # Coverage Generation
+# - task: reportgenerator@4
+#   displayName: ReportGenerator
+#   inputs:
+#     reports: '**/coverage.cobertura.xml'
+#     targetdir: 'CoverageTrotting'
+#     reporttypes: 'HtmlInline_AzurePipelines'
+
+# # Publish code coverage
+# - task: PublishCodeCoverageResults@1
+#   displayName: 'Publish code coverage'
+#   inputs:
+#     codeCoverageTool: Cobertura
+#     summaryFileLocation: '**/coverage.cobertura.xml'
+#     reportDirectory: CoverageTrotting
+
 # Publish to Artifact 'drop'
 #- task: PublishBuildArtifacts@1
 #  displayName: Publish Artifact to Drop
