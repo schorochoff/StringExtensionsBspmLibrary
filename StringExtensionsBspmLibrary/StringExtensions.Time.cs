@@ -47,7 +47,7 @@ namespace StringExtensionsBspmLibrary
         /// <param name="value">String to Parse into TimeSpan</param>
         /// <param name="provider">IFormatProvider as define by TimeSpan.TryParse</param>
         /// <returns></returns>
-        public static TimeSpan? TryParseToTimeStamp(this string? value, IFormatProvider? provider = null)
+        public static TimeSpan? TryParseToTimeSpan(this string? value, IFormatProvider? provider = null)
         {
             if (value == null)
             {
@@ -71,7 +71,7 @@ namespace StringExtensionsBspmLibrary
         /// <param name="style">TimeSpanStyles as define by TimeSpan.TryParseExact</param>
         /// <param name="provider">IFormatProvider as define by TimeSpan.TryParse</param>
         /// <returns></returns>
-        public static TimeSpan? TryParseToTimeStamp(this string? value, string[] formats, TimeSpanStyles? style = null, IFormatProvider? provider = null)
+        public static TimeSpan? TryParseToTimeSpan(this string? value, string[] formats, TimeSpanStyles? style = null, IFormatProvider? provider = null)
         {
             if (value == null)
             {
@@ -87,12 +87,27 @@ namespace StringExtensionsBspmLibrary
                 }
                 else
                 {
-                    isSuccess = TimeSpan.TryParse(value, out result);
+                    isSuccess = TimeSpan.TryParseExact(value, formats, provider, out result);
                 }
                 return isSuccess ? result : (TimeSpan?)null;
             }
         }
 
+
+        /// <summary>
+        /// Try to parse the value to a DateTime.
+        /// Returns default value if <paramref name="value"/> can't be parsed into a DateTime.
+        /// 
+        /// </summary>
+        /// <param name="value">String to Parse into TimeSpan</param>
+        /// <param name="format">Format of the string Ex : ["g", "G", "%h"]</param>
+        /// <param name="style">TimeSpanStyles as define by TimeSpan.TryParseExact</param>
+        /// <param name="provider">IFormatProvider as define by TimeSpan.TryParse</param>
+        /// <returns></returns>
+        public static TimeSpan? TryParseToTimeSpan(this string? value, string format, TimeSpanStyles? style = null, IFormatProvider? provider = null)
+        {
+            return TryParseToTimeSpan(value, new string[1] { format }, style, provider);
+        }
         #endregion
 
         /// <summary>

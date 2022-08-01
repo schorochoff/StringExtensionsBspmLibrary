@@ -26,7 +26,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_TryParseToInt_InvalidValues()
+        public void StringExtensions_Number_TryParseToInt_InvalidValues()
         {
             Assert.AreEqual(null, "".TryParseToInt());
             Assert.AreEqual(null, " ".TryParseToInt());
