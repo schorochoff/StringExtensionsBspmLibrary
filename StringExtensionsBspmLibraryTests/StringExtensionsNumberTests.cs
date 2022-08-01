@@ -137,6 +137,42 @@ namespace StringExtensionsBspmLibraryTests
 
         #endregion
 
+        #region Extract Number
+
+        [TestMethod]
+        [DataRow("124")]
+        [DataRow("ABD124")]
+        [DataRow("AB D124hfkj")]
+        [DataRow("A BD124hf kj15")]
+        public void StringExtensions_ExtractFirstInt(string? mockedString)
+        {
+            Assert.AreEqual(124, mockedString.ExtractFirstInt());
+        }
+
+        [TestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        [DataRow("bcfijk")]
+        [DataRow("ABD . cfbk . - ")]
+        public void StringExtensions_ExtractFirstInt_NoInt(string? mockedString)
+        {
+            Assert.AreEqual(null, mockedString.ExtractFirstInt());
+        }
+
+
+        [TestMethod]
+        [DataRow("-124")]
+        [DataRow("ABD-124")]
+        [DataRow("AB D-124hfkj")]
+        [DataRow("A BD-124hf 3 kj-15")]
+        public void StringExtensions_ExtractFirstInt_Negative(string? mockedString)
+        {
+            Assert.AreEqual(-124, mockedString.ExtractFirstInt());
+        }
+
+        #endregion
+
         [TestMethod]
         public void StringExtensions_KeepDigitsOnly()
         {

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace StringExtensionsBspmLibrary
@@ -105,25 +107,32 @@ namespace StringExtensionsBspmLibrary
 
         #endregion
 
-        //#region Extract Number
+        #region Extract Number
 
-        //todo ExtractFirstInt
-        //todo ExtractInts
+        /// <summary>
+        /// Return the integers contained in <paramref name="value"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static IEnumerable<int> ExtractInts(this string? value)
+        {
+            if (value == null)
+                return Enumerable.Empty<int>();
+            return Regex.Split(value, @"-?\d+").Select(i => int.Parse(i));
+        }
 
-        ///// <summary>
-        ///// Return the integers contained in <paramref name="value"/>
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static int? ExtractInt(this string? value)
-        //{
-        //    var valueCleaned = Regex.Match(value, @"\d+").Value;
-        //    int result;
-        //    if (int.TryParse(valueCleaned, out result))
-        //        return result;
-        //    else
-        //        return null;
-        //}
+        /// <summary>
+        /// Return the first integer found in the string <paramref name="value"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int? ExtractFirstInt(this string? value)
+        {
+            if (value == null)
+                return null;
+            var firstInt = Regex.Match(value, @"-?\d+").Value;
+            return firstInt.TryParseToInt();
+        }
 
         ///// <summary>
         ///// Return the decimal contained in <paramref name="value"/>
@@ -139,7 +148,7 @@ namespace StringExtensionsBspmLibrary
         //    else
         //        return null;
         //}
-        //#endregion
+        #endregion
 
         /// <summary>
         /// Return a string containing the digits of the given string <param name="value">
@@ -149,10 +158,10 @@ namespace StringExtensionsBspmLibrary
         /// <returns></returns>
         public static string KeepDigitsOnly(this string value)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
                 return string.Empty;
 
-            return Regex.Replace(value, "[^0-9]", String.Empty);
+            return Regex.Replace(value, @"[^0-9]", string.Empty);
         }
 
 
