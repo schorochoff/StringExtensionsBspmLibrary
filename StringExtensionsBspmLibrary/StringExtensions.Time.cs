@@ -1,59 +1,128 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace StringExtensionsBspmLibrary
 {
     public static partial class StringExtensions
     {
-        ///// <summary>
-        ///// Parse string with represent a race time into Time span. The string must have one of the following format:
-        /////         - m:s.f       ex: 1:23.45     for 1 minutes 23 seconds and 450 milliseconds
-        /////         - m:s:f       ex: 1:23:45     for 1 minutes 23 seconds and 450 milliseconds
-        /////         - m.s.f       ex: 1.23.45     for 1 minutes 23 seconds and 450 milliseconds
-        /////         - m's''f      ex: 1'23''45    for 1 minutes 23 seconds and 450 milliseconds
-        /////         - m's"f       ex: 10'2"3      for 10 minutes 2 seconds and 300 milliseconds
-        ///// </summary>
-        ///// <param name="text"></param>
-        ///// <returns></returns>
-        //public static TimeSpan? ToTimeSpan(this string? text)
-        //{
-        //    if (text == null)
-        //        return null;
+        #region Try Parse Time
 
-        //    TimeSpan time;
-        //    Regex regex = new Regex("^(?<m>([0-9]+))(:|.|\')(?<s>([0-9]{1,2}))(\'\'|\"|:|.|,)(?<f>([0-9]+))$");
-        //    if (regex.IsMatch(text))
-        //    {
-        //        text = regex.Replace(text, "0:0:${m}:${s}.${f}");
-        //        var isValidTimeSpan = TimeSpan.TryParse(text, System.Globalization.CultureInfo.InvariantCulture, out time);
-        //        if (isValidTimeSpan)
-        //            return time;
-        //    }
+        /// <summary>
+        /// Try to parse the value to a DateTime.
+        /// Returns default value if <paramref name="value"/> can't be parsed into a DateTime.
+        /// 
+        /// </summary>
+        /// <param name="value">String to Parse into DateTime</param>
+        /// <param name="style">DateTimeStyles as define by DateTime.TryParse</param>
+        /// <param name="provider">IFormatProvider as define by DateTime.TryParse</param>
+        /// <returns></returns>
+        public static DateTime? TryParseToDateTime(this string? value, DateTimeStyles? style = null, IFormatProvider? provider = null)
+        {
+            if (value == null)
+            {
+                return default;
+            }
+            else
+            {
+                bool isSuccess;
+                DateTime result;
+                if (style != null)
+                {
+                    isSuccess = DateTime.TryParse(value, provider, style.Value, out result);
+                }
+                else
+                {
+                    isSuccess = DateTime.TryParse(value, out result);
+                }
+                return isSuccess ? result : (DateTime?)null;
+            }
+        }
 
-        //    return null;
-        //}
+        /// <summary>
+        /// Try to parse the value to a TimeSpan.
+        /// Returns default value if <paramref name="value"/> can't be parsed into a TimeSpan.
+        /// 
+        /// </summary>
+        /// <param name="value">String to Parse into TimeSpan</param>
+        /// <param name="provider">IFormatProvider as define by TimeSpan.TryParse</param>
+        /// <returns></returns>
+        public static TimeSpan? TryParseToTimeStamp(this string? value, IFormatProvider? provider = null)
+        {
+            if (value == null)
+            {
+                return default;
+            }
+            else
+            {
+                bool isSuccess = TimeSpan.TryParse(value, provider, out TimeSpan result);
 
-        ///// <summary>
-        ///// Try to parse the value to a DateTime.
-        ///// Returns the provided default value if an error occured.
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static DateTime TryParseToDateTime(this string? value, DateTime defaultValue)
+                return isSuccess ? result : (TimeSpan?)null;
+            }
+        }
 
-        //{
-        //    if (value == null)
-        //    {
-        //        return defaultValue;
-        //    }
-        //    else
-        //    {
-        //        var success = DateTime.TryParse(value, out DateTime result);
-        //        return success ? result : defaultValue;
-        //    }
-        //}
+        /// <summary>
+        /// Try to parse the value to a DateTime.
+        /// Returns default value if <paramref name="value"/> can't be parsed into a DateTime.
+        /// 
+        /// </summary>
+        /// <param name="value">String to Parse into TimeSpan</param>
+        /// <param name="formats">Formats of the string Ex : ["g", "G", "%h"]</param>
+        /// <param name="style">TimeSpanStyles as define by TimeSpan.TryParseExact</param>
+        /// <param name="provider">IFormatProvider as define by TimeSpan.TryParse</param>
+        /// <returns></returns>
+        public static TimeSpan? TryParseToTimeStamp(this string? value, string[] formats, TimeSpanStyles? style = null, IFormatProvider? provider = null)
+        {
+            if (value == null)
+            {
+                return default;
+            }
+            else
+            {
+                bool isSuccess;
+                TimeSpan result;
+                if (style != null)
+                {
+                    isSuccess = TimeSpan.TryParseExact(value, formats, provider, style.Value, out result);
+                }
+                else
+                {
+                    isSuccess = TimeSpan.TryParse(value, out result);
+                }
+                return isSuccess ? result : (TimeSpan?)null;
+            }
+        }
 
+        #endregion
 
+        /// <summary>
+        /// Convert a string containing minutes, seconds and milliseconds into time span. 
+        /// The string must have one of the following format:
+        ///         - m:s.f       ex: 1:23.45     for 1 minutes 23 seconds and 450 milliseconds
+        ///         - m:s:f       ex: 1:23:45     for 1 minutes 23 seconds and 450 milliseconds
+        ///         - m.s.f       ex: 1.23.45     for 1 minutes 23 seconds and 450 milliseconds
+        ///         - m's''f      ex: 1'23''45    for 1 minutes 23 seconds and 450 milliseconds
+        ///         - m's"f       ex: 10'2"3      for 10 minutes 2 seconds and 300 milliseconds
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static TimeSpan? ToTimeSpanSmallDuration(this string? text)
+        {
+            if (text == null)
+                return null;
+
+            TimeSpan time;
+            Regex regex = new Regex("^(?<m>([0-9]+))(:|.|\')(?<s>([0-9]{1,2}))(\'\'|\"|:|.|,)(?<f>([0-9]+))$");
+            if (regex.IsMatch(text))
+            {
+                text = regex.Replace(text, "0:0:${m}:${s}.${f}");
+                var isValidTimeSpan = TimeSpan.TryParse(text, System.Globalization.CultureInfo.InvariantCulture, out time);
+                if (isValidTimeSpan)
+                    return time;
+            }
+
+            return null;
+        }
 
 
         ///// <summary>
@@ -79,20 +148,6 @@ namespace StringExtensionsBspmLibrary
         //        return string.Empty;
         //    else
         //        return date.Value.ToInvariantString(format);
-        //}
-
-
-
-        ///// <summary>
-        ///// Parse the <paramref name="value"/> and returns a <see cref="TimeSpan"/> object.
-        ///// Returns null if the format of <paramref name="value"/> param is incorrect ("hh:mm").
-        ///// </summary>
-        //public static TimeSpan? AsTimeSpan(this string value)
-        //{
-        //    if (TimeSpan.TryParse(value, out TimeSpan timespan))
-        //        return timespan;
-
-        //    return null;
         //}
     }
 }
