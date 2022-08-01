@@ -109,17 +109,17 @@ namespace StringExtensionsBspmLibrary
 
         #region Extract Number
 
-        /// <summary>
-        /// Return the integers contained in <paramref name="value"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static IEnumerable<int> ExtractInts(this string? value)
-        {
-            if (value == null)
-                return Enumerable.Empty<int>();
-            return Regex.Split(value, @"-?\d+").Select(i => int.Parse(i));
-        }
+        ///// <summary>
+        ///// Return the integers contained in <paramref name="value"/>
+        ///// </summary>
+        ///// <param name="value"></param>
+        ///// <returns></returns>
+        //public static IEnumerable<int> ExtractInts(this string? value)
+        //{
+        //    if (value == null)
+        //        return Enumerable.Empty<int>();
+        //    return Regex.Split(value, @"-?\d+").Select(i => int.Parse(i));
+        //}
 
         /// <summary>
         /// Return the first integer found in the string <paramref name="value"/>
