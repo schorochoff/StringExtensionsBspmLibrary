@@ -111,6 +111,7 @@ namespace StringExtensionsBspmLibrary
 
         /// <summary>
         /// Return the first integer found in the string <paramref name="value"/>
+        /// Integers can be positive or negative
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -124,6 +125,7 @@ namespace StringExtensionsBspmLibrary
 
         /// <summary>
         /// Return the integers contained in <paramref name="value"/>
+        /// Integers can be positive or negative
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
