@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace StringExtensionsBspmLibrary
 {
@@ -105,6 +106,10 @@ namespace StringExtensionsBspmLibrary
         #endregion
 
         //#region Extract Number
+
+        //todo ExtractFirstInt
+        //todo ExtractInts
+
         ///// <summary>
         ///// Return the integers contained in <paramref name="value"/>
         ///// </summary>
@@ -136,6 +141,20 @@ namespace StringExtensionsBspmLibrary
         //}
         //#endregion
 
+        /// <summary>
+        /// Return a string containing the digits of the given string <param name="value">
+        /// "ABC-12.3" => "123"
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string KeepDigitsOnly(this string value)
+        {
+            if (String.IsNullOrEmpty(value))
+                return string.Empty;
+
+            return Regex.Replace(value, "[^0-9]", String.Empty);
+        }
+
 
         ///// <summary>
         ///// "123"  = "123": true
@@ -151,17 +170,6 @@ namespace StringExtensionsBspmLibrary
         //}
 
 
-        ///// <summary>
-        ///// "ABC-123" => "123"
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static string KeepDigitsOnly(this string value)
-        //{
-        //    if (String.IsNullOrEmpty(value))
-        //        return string.Empty;
 
-        //    return Regex.Replace(value, "[^0-9]", String.Empty);
-        //}
     }
 }

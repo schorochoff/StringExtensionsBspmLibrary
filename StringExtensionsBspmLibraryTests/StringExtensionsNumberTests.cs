@@ -137,12 +137,12 @@ namespace StringExtensionsBspmLibraryTests
 
         #endregion
 
-        //[TestMethod]
-        //public void StringExtensions_KeepDigitsOnly()
-        //{
-        //    Assert.AreEqual("", "".KeepDigitsOnly());
-        //    Assert.AreEqual("123456", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepDigitsOnly());
-        //}
+        [TestMethod]
+        public void StringExtensions_KeepDigitsOnly()
+        {
+            Assert.AreEqual("", "".KeepDigitsOnly());
+            Assert.AreEqual("123456", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepDigitsOnly());
+        }
 
 
     }
