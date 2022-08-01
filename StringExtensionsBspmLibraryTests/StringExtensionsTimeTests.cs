@@ -11,7 +11,7 @@ namespace StringExtensionsBspmLibraryTests
         #region Try Parse Time
 
         [TestInitialize]
-        public void testInit()
+        public void TestInit()
         {
             CultureInfo.CurrentCulture = new CultureInfo("fr-BE");
         }

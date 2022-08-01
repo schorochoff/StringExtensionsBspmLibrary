@@ -9,7 +9,7 @@ namespace StringExtensionsBspmLibraryTests
     public class StringExtensionsNumberTests
     {
         [TestInitialize]
-        public void testInit()
+        public void TestInit()
         {
             CultureInfo.CurrentCulture = new CultureInfo("fr-CA");
         }
