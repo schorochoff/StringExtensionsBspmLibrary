@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StringExtensionsBspmLibrary;
 using System.Globalization;
+using System.Linq;
 
 namespace StringExtensionsBspmLibraryTests
 {
@@ -153,7 +154,7 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow(null)]
         [DataRow("")]
         [DataRow(" ")]
-        [DataRow("bcfijk")]
+        [DataRow("Fourteen")]
         [DataRow("ABD . cfbk . - ")]
         public void StringExtensions_ExtractFirstInt_NoInt(string? mockedString)
         {
@@ -163,12 +164,61 @@ namespace StringExtensionsBspmLibraryTests
 
         [TestMethod]
         [DataRow("-124")]
+        [DataRow("- 124")]
         [DataRow("ABD-124")]
         [DataRow("AB D-124hfkj")]
         [DataRow("A BD-124hf 3 kj-15")]
         public void StringExtensions_ExtractFirstInt_Negative(string? mockedString)
         {
             Assert.AreEqual(-124, mockedString.ExtractFirstInt());
+        }
+
+
+        [TestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        [DataRow("Fourteen")]
+        [DataRow("ABD . cfbk . - ")]
+        public void StringExtensions_ExtractInts_Empty(string? mockedString)
+        {
+            Assert.AreEqual(0, mockedString.ExtractInts().Count());
+        }
+
+        [TestMethod]
+        [DataRow("124")]
+        [DataRow("ABD 124 coucou")]
+        [DataRow("ABD124")]
+        [DataRow("AB D124hfkj")]
+        public void StringExtensions_ExtractInts_OneIntPositive(string? mockedString)
+        {
+            Assert.AreEqual(124, mockedString.ExtractInts().FirstOrDefault());
+        }
+
+        [TestMethod]
+        [DataRow("-124")]
+        [DataRow("- 124")]
+        [DataRow("ABD-124")]
+        [DataRow("ABD - 124 F")]
+        [DataRow("AB D-124hfkj")]
+        public void StringExtensions_ExtractInts_OneIntNegative(string? mockedString)
+        {
+            Assert.AreEqual(-124, mockedString.ExtractInts().FirstOrDefault());
+        }
+
+        [TestMethod]
+        [DataRow("100 + 24 - 124 = 0")]
+        [DataRow("100 + 24 -124 = 0")]
+        [DataRow("100 et 24 et-124 égale 0.")]
+        [DataRow("100.24-124,0")]
+        public void StringExtensions_ExtractInts_SeveralInt(string? mockedString)
+        {
+            var ints = mockedString.ExtractInts();
+            Assert.AreEqual(4, ints.Count());
+            Assert.IsTrue(ints.Contains(100), "100 not found");
+            Assert.IsTrue(ints.Contains(24), "24 not found");
+            Assert.IsTrue(ints.Contains(-124), "124 not found");
+            Assert.IsTrue(ints.Contains(0), "0 not found");
         }
 
         #endregion

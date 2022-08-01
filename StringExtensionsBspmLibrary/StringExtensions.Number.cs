@@ -109,18 +109,6 @@ namespace StringExtensionsBspmLibrary
 
         #region Extract Number
 
-        ///// <summary>
-        ///// Return the integers contained in <paramref name="value"/>
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static IEnumerable<int> ExtractInts(this string? value)
-        //{
-        //    if (value == null)
-        //        return Enumerable.Empty<int>();
-        //    return Regex.Split(value, @"-?\d+").Select(i => int.Parse(i));
-        //}
-
         /// <summary>
         /// Return the first integer found in the string <paramref name="value"/>
         /// </summary>
@@ -130,9 +118,22 @@ namespace StringExtensionsBspmLibrary
         {
             if (value == null)
                 return null;
-            var firstInt = Regex.Match(value, @"-?\d+").Value;
+            var firstInt = Regex.Match(value, @"-?( )?\d+").Value.Replace(" ", "");
             return firstInt.TryParseToInt();
         }
+
+        /// <summary>
+        /// Return the integers contained in <paramref name="value"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static IEnumerable<int> ExtractInts(this string? value)
+        {
+            if (value == null)
+                return Enumerable.Empty<int>();
+            return Regex.Matches(value, @"-?( )?\d+").Select(i => int.Parse(i.Value.Replace(" ", "")));
+        }
+
 
         ///// <summary>
         ///// Return the decimal contained in <paramref name="value"/>
