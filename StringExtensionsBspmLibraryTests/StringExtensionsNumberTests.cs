@@ -17,7 +17,7 @@ namespace StringExtensionsBspmLibraryTests
         #region Try Parse Numbers
 
         [TestMethod]
-        public void StringExtensions_TryParseToInt()
+        public void StringExtensions_Number_TryParseToInt()
         {
             Assert.AreEqual(42, "42".TryParseToInt());
             Assert.AreEqual(0, "0".TryParseToInt());
@@ -38,7 +38,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_TryParseToInt_ChangeCulture()
+        public void StringExtensions_Number_TryParseToInt_ChangeCulture()
         {
             var style = NumberStyles.Number | NumberStyles.AllowCurrencySymbol;
             // fr-CA
@@ -54,7 +54,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_TryParseToLong()
+        public void StringExtensions_Number_TryParseToLong()
         {
             Assert.AreEqual(42, "42".TryParseToLong());
             Assert.AreEqual(0, "0".TryParseToLong());
@@ -65,7 +65,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_TryParseToLong_InvalidValues()
+        public void StringExtensions_Number_TryParseToLong_InvalidValues()
         {
             Assert.AreEqual(null, "".TryParseToLong());
             Assert.AreEqual(null, " ".TryParseToLong());
@@ -77,7 +77,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_TryParseToLong_ChangeCulture()
+        public void StringExtensions_Number_TryParseToLong_ChangeCulture()
         {
             var style = NumberStyles.Number | NumberStyles.AllowCurrencySymbol;
             // fr-CA
@@ -94,7 +94,7 @@ namespace StringExtensionsBspmLibraryTests
 
 
         [TestMethod]
-        public void StringExtensions_TryParseToDecimal()
+        public void StringExtensions_Number_TryParseToDecimal()
         {
             Assert.AreEqual(42m, "42".TryParseToDecimal());
             Assert.AreEqual(12.34m, "12,34".TryParseToDecimal());
@@ -105,7 +105,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_TryParseToDecimal_InvalidValues()
+        public void StringExtensions_Number_TryParseToDecimal_InvalidValues()
         {
             Assert.AreEqual(null, "".TryParseToDecimal());
             Assert.AreEqual(null, " ".TryParseToDecimal());
@@ -117,7 +117,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_TryParseToDecimal_ChangeCulture()
+        public void StringExtensions_Number_TryParseToDecimal_ChangeCulture()
         {
             var style = NumberStyles.Number | NumberStyles.AllowCurrencySymbol;
 
@@ -145,7 +145,7 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("ABD124")]
         [DataRow("AB D124hfkj")]
         [DataRow("A BD124hf kj15")]
-        public void StringExtensions_ExtractFirstInt(string? mockedString)
+        public void StringExtensions_Number_ExtractFirstInt(string? mockedString)
         {
             Assert.AreEqual(124, mockedString.ExtractFirstInt());
         }
@@ -156,7 +156,7 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow(" ")]
         [DataRow("Fourteen")]
         [DataRow("ABD . cfbk . - ")]
-        public void StringExtensions_ExtractFirstInt_NoInt(string? mockedString)
+        public void StringExtensions_Number_ExtractFirstInt_NoInt(string? mockedString)
         {
             Assert.AreEqual(null, mockedString.ExtractFirstInt());
         }
@@ -168,7 +168,7 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("ABD-124")]
         [DataRow("AB D-124hfkj")]
         [DataRow("A BD-124hf 3 kj-15")]
-        public void StringExtensions_ExtractFirstInt_Negative(string? mockedString)
+        public void StringExtensions_Number_ExtractFirstInt_Negative(string? mockedString)
         {
             Assert.AreEqual(-124, mockedString.ExtractFirstInt());
         }
@@ -180,7 +180,7 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow(" ")]
         [DataRow("Fourteen")]
         [DataRow("ABD . cfbk . - ")]
-        public void StringExtensions_ExtractInts_Empty(string? mockedString)
+        public void StringExtensions_Number_ExtractInts_Empty(string? mockedString)
         {
             Assert.AreEqual(0, mockedString.ExtractInts().Count());
         }
@@ -190,7 +190,7 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("ABD 124 coucou")]
         [DataRow("ABD124")]
         [DataRow("AB D124hfkj")]
-        public void StringExtensions_ExtractInts_OneIntPositive(string? mockedString)
+        public void StringExtensions_Number_ExtractInts_OneIntPositive(string? mockedString)
         {
             Assert.AreEqual(124, mockedString.ExtractInts().FirstOrDefault());
         }
@@ -201,7 +201,7 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("ABD-124")]
         [DataRow("ABD - 124 F")]
         [DataRow("AB D-124hfkj")]
-        public void StringExtensions_ExtractInts_OneIntNegative(string? mockedString)
+        public void StringExtensions_Number_ExtractInts_OneIntNegative(string? mockedString)
         {
             Assert.AreEqual(-124, mockedString.ExtractInts().FirstOrDefault());
         }
@@ -211,7 +211,7 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("100 + 24 -124 = 0")]
         [DataRow("100 et 24 et-124 égale 0.")]
         [DataRow("100.24-124,0")]
-        public void StringExtensions_ExtractInts_SeveralInt(string? mockedString)
+        public void StringExtensions_Number_ExtractInts_SeveralInt(string? mockedString)
         {
             var ints = mockedString.ExtractInts();
             Assert.AreEqual(4, ints.Count());
@@ -224,9 +224,11 @@ namespace StringExtensionsBspmLibraryTests
         #endregion
 
         [TestMethod]
-        public void StringExtensions_KeepDigitsOnly()
+        public void StringExtensions_Number_KeepDigitsOnly()
         {
             Assert.AreEqual("", "".KeepDigitsOnly());
+            Assert.AreEqual("", "hello word!".KeepDigitsOnly());
+            Assert.AreEqual("125", "125".KeepDigitsOnly());
             Assert.AreEqual("123456", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepDigitsOnly());
         }
 

@@ -151,6 +151,7 @@ namespace StringExtensionsBspmLibrary
         //    else
         //        return null;
         //}
+
         #endregion
 
         /// <summary>
@@ -166,22 +167,5 @@ namespace StringExtensionsBspmLibrary
 
             return Regex.Replace(value, @"[^0-9]", string.Empty);
         }
-
-
-        ///// <summary>
-        ///// "123"  = "123": true
-        ///// "0123" = "123": true
-        ///// " 123" = "123": true
-        ///// "A123" = "123": false
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static bool IsDigitsEquals(this string source, string value)
-        //{
-        //    return Convert.ToInt64("0" + source.KeepDigitsOnly()) == Convert.ToInt64("0" + value.KeepDigitsOnly());
-        //}
-
-
-
     }
 }
