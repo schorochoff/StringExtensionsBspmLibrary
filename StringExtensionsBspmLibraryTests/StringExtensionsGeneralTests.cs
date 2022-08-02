@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StringExtensionsBspmLibrary;
+using System.Linq;
 
 namespace StringExtensionsBspmLibraryTests
 {
@@ -171,25 +172,147 @@ namespace StringExtensionsBspmLibraryTests
 
         #region Case
 
-        //[TestMethod]
-        //public void StringExtensions_CapitalizeEachWord()
-        //{
-        //    var name = "A bord d'isques";
-        //    Assert.AreEqual("A Bord D'isques", name.CapitalizeEachWord());
-        //    name = "A B c D e";
-        //    Assert.AreEqual("A B C D E", name.CapitalizeEachWord());
-        //    name = "a";
-        //    Assert.AreEqual("A", name.CapitalizeEachWord());
-        //    name = "       ";
-        //    Assert.AreEqual("       ", name.CapitalizeEachWord());
-        //    name = "Nom Correctement Formaté";
-        //    Assert.AreEqual("Nom Correctement Formaté", name.CapitalizeEachWord());
-        //    name = "Nom avec   plusieurs      espaces";
-        //    Assert.AreEqual("Nom Avec Plusieurs Espaces", name.CapitalizeEachWord());
-        //    name = "";
-        //    Assert.AreEqual("", name.CapitalizeEachWord());
-        //}
 
+        [TestMethod]
+        [DataRow("A")]
+        [DataRow("A B")]
+        [DataRow("Abc def")]
+        [DataRow("Abc Def")]
+        [DataRow("Abc_def")]
+        [DataRow("ABC DEF")]
+        [DataRow("I w'nt change. \n NEVER!")]
+        public void StringExtensions_General_CapitalizeAfterCharacters_NoTargetCharacters(string mockedValue)
+        {
+            Assert.AreEqual(mockedValue, mockedValue.CapitalizeAfterCharacters(Enumerable.Empty<char>()));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_CapitalizeAfterCharacters_NoTargetCharacters_Minimize()
+        {
+            Assert.AreEqual("A", "A".CapitalizeAfterCharacters(Enumerable.Empty<char>(), minimizeOtherChar : true));
+            Assert.AreEqual("A b", "A B".CapitalizeAfterCharacters(Enumerable.Empty<char>(), minimizeOtherChar: true));
+            Assert.AreEqual("Abc def", "Abc def".CapitalizeAfterCharacters(Enumerable.Empty<char>(), minimizeOtherChar : true));
+            Assert.AreEqual("Abc def", "Abc Def".CapitalizeAfterCharacters(Enumerable.Empty<char>(), minimizeOtherChar : true));
+            Assert.AreEqual("Abc_def", "Abc_def".CapitalizeAfterCharacters(Enumerable.Empty<char>(), minimizeOtherChar : true));
+            Assert.AreEqual("Abc def", "ABC DEF".CapitalizeAfterCharacters(Enumerable.Empty<char>(), minimizeOtherChar: true));
+            Assert.AreEqual("I would change. \n yes!", "I would change. \n YES!".CapitalizeAfterCharacters(Enumerable.Empty<char>(), minimizeOtherChar: true));
+        }
+
+        [TestMethod]
+        [DataRow("A")]
+        [DataRow("A B")]
+        [DataRow("Abc def")]
+        [DataRow("Abc Def")]
+        [DataRow("Abc_def")]
+        [DataRow("ABC DEF")]
+        [DataRow("I w'nt change. \n NEVER!")]
+        public void StringExtensions_General_CapitalizeAfterCharacters_OneTargetCharacters_Unused(string mockedValue)
+        {
+            Assert.AreEqual(mockedValue, mockedValue.CapitalizeAfterCharacters(new char[] { 'x' }));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_CapitalizeAfterCharacters_OneTargetCharacters_Unused_Minimize()
+        {
+            Assert.AreEqual("A", "A".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar: true));
+            Assert.AreEqual("A b", "A B".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar: true));
+            Assert.AreEqual("Abc def", "Abc def".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar : true));
+            Assert.AreEqual("Abc def", "Abc Def".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar : true));
+            Assert.AreEqual("Abc_def", "Abc_def".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar : true));
+            Assert.AreEqual("Abc def", "ABC DEF".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar : true));
+            Assert.AreEqual("Abc def", "ABC DEF".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar: true));
+            Assert.AreEqual("I would change. \n yes!", "I would change. \n YES!".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar: true));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_CapitalizeAfterCharacters_OneTargetCharacters_Used()
+        {
+            Assert.AreEqual("A ", "A ".CapitalizeAfterCharacters(new char[] { ' ' }));
+            Assert.AreEqual("HELLO ", "HELLO ".CapitalizeAfterCharacters(new char[] { ' ' }));
+            Assert.AreEqual("A B", "A b".CapitalizeAfterCharacters(new char[] { ' ' }));
+            Assert.AreEqual("Abc Def", "Abc def".CapitalizeAfterCharacters(new char[] { ' ' }));
+            Assert.AreEqual("ABC DEF", "ABC DEF".CapitalizeAfterCharacters(new char[] { ' ' }));
+            Assert.AreEqual("Abc_Def", "Abc_def".CapitalizeAfterCharacters(new char[] { '_' }));
+            Assert.AreEqual("Abc_def-Ghi", "Abc_def-ghi".CapitalizeAfterCharacters(new char[] { '-' }));
+            Assert.AreEqual("Abc-DEf-GhI", "Abc-dEf-ghI".CapitalizeAfterCharacters(new char[] { '-' }));
+            Assert.AreEqual("Abc   Def   Ghi", "Abc   def   ghi".CapitalizeAfterCharacters(new char[] { ' ' }));
+            Assert.AreEqual("I Would Change. \n YES!", "I would change. \n YES!".CapitalizeAfterCharacters(new char[] { ' ' }));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_CapitalizeAfterCharacters_OneTargetCharacters_Used_Minimize()
+        {
+            Assert.AreEqual("A", "A".CapitalizeAfterCharacters(new char[] { ' ' }, minimizeOtherChar: true));
+            Assert.AreEqual("Hello ", "HELLO ".CapitalizeAfterCharacters(new char[] { ' ' }, minimizeOtherChar: true));
+            Assert.AreEqual("A B", "A b".CapitalizeAfterCharacters(new char[] { ' ' }, minimizeOtherChar: true));
+            Assert.AreEqual("Abc Def", "Abc Def".CapitalizeAfterCharacters(new char[] { ' ' }, minimizeOtherChar : true));
+            Assert.AreEqual("Abc Def", "ABC DEF".CapitalizeAfterCharacters(new char[] { ' ' }, minimizeOtherChar : true));
+            Assert.AreEqual("Abc_Def", "Abc_def".CapitalizeAfterCharacters(new char[] { '_' }, minimizeOtherChar: true));
+            Assert.AreEqual("Abc def-Ghi", "Abc def-ghi".CapitalizeAfterCharacters(new char[] { '-' }, minimizeOtherChar : true));
+            Assert.AreEqual("Abc-Def-Ghi", "Abc-dEf-ghI".CapitalizeAfterCharacters(new char[] { '-' }, minimizeOtherChar: true));
+            Assert.AreEqual("Abc   Def   Ghi", "Abc   def   ghi".CapitalizeAfterCharacters(new char[] { ' ' }, minimizeOtherChar: true));
+            Assert.AreEqual("I Would Change. \n Yes!", "I would change. \n YES!".CapitalizeAfterCharacters(new char[] { ' ' }, minimizeOtherChar: true));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_CapitalizeAfterCharacters_SeveralTargetCharacters()
+        {
+            Assert.AreEqual("A", "a".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("A", "A".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("A+", "a+".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("A+", "A+".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("A-", "a-".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("A++", "a++".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("A--", "a--".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("A+-", "a+-".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("+A", "+a".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("++A", "++a".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("++A++", "++a++".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("Hello", "hello".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("HELLO", "HELLO".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("Hello-Hi-World-!", "hello-hi-world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("Hello-Hi+World-!", "hello-hi+world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("HELLO-Hi+World-!", "hELLO-hi+world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("Hello---Hi++++World-!", "hello---hi++++world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("Hello---Hi++++World-!", "hello---hi++++world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+            Assert.AreEqual("HELLO---HI++++World-!", "hELLO---hI++++world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_CapitalizeAfterCharacters_SeveralTargetCharacters_Minimize()
+        {
+            Assert.AreEqual("Hello", "hello".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar : true));
+            Assert.AreEqual("Hello", "HELLO".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar: true));
+            Assert.AreEqual("Hello-Hi-World-!", "hello-hi-world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar : true));
+            Assert.AreEqual("Hello-Hi+World-!", "hello-hi+world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar : true));
+            Assert.AreEqual("Hello-Hi+World-!", "hELLO-hi+world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar: true));
+            Assert.AreEqual("Hello---Hi++++World-!", "hello---hi++++world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar : true));
+            Assert.AreEqual("Hello---Hi++++World-!", "hello---hi++++world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar : true));
+            Assert.AreEqual("Hello---Hi++++World-!", "hELLO---hI++++world-!".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar: true));
+        }
+
+        [TestMethod]
+        [DataRow("")]
+        [DataRow(" ")]
+        [DataRow("\t")]
+        [DataRow("             ")]
+        [DataRow("     $ !-- +   )")]
+        public void StringExtensions_General_CapitalizeAfterCharacters_StringWithoutLetters(string mockedValue)
+        {
+
+            var targetCharactersSets = new char[][]
+            {
+                new char[] {' '},
+                new char[] {'-'},
+                new char[] {'\t'},
+                new char[] {'-', ' ' , 'a', '\t' },
+                new char[] {' ', ' '}
+            };
+            foreach (var set in targetCharactersSets)
+            {
+                Assert.AreEqual(mockedValue, mockedValue.CapitalizeAfterCharacters(set), $"String : {mockedValue}, Set : {set}");
+            }
+        }
         #endregion
 
         #region Abreviation

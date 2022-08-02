@@ -187,6 +187,65 @@ namespace StringExtensionsBspmLibrary
 
         /// <summary>
         /// Returns string where : 
+        /// - the first letter is capitalized
+        /// - each first letter after a character in <paramref name="targetCharacters"/> is capitalised
+        /// 
+        /// <paramref name="minimizeOtherChar"/> Indicate if the other character of the string should be minimised
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetCharacters"></param>
+        /// <param name="minimizeOtherChar">Indicate if the other character of the string should be minimised</param>
+        /// <returns></returns>
+        public static string CapitalizeAfterCharacters(this string value, IEnumerable<char> targetCharacters, bool minimizeOtherChar = false)
+        {
+            var stringToCapitalize = value.ToCharArray();
+
+            if (string.IsNullOrEmpty(value))
+                return value;
+            else if (!targetCharacters.Any() || !stringToCapitalize.Intersect(targetCharacters).Any())
+            {
+                var firstChar = value.Substring(0, 1).ToUpper();
+                var otherChars = value.Substring(1, value.Length-1);
+                if (minimizeOtherChar)
+                    otherChars = otherChars.ToLower();
+                return firstChar + otherChars;
+            }
+            else
+            {
+                var stringCapitalized = new StringBuilder();
+                var lastCharacter = targetCharacters.First();
+                foreach (var character in stringToCapitalize)
+                {
+
+                    if (targetCharacters.Contains(lastCharacter))
+                        stringCapitalized.Append(char.ToUpper(character));
+                    else
+                        stringCapitalized.Append(minimizeOtherChar ? char.ToLower(character) : character);
+
+                    lastCharacter = character;
+                }
+                return stringCapitalized.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Returns string where : 
+        /// - the first letter is capitalized
+        /// - each First letter after <paramref name="character"/> is capitalised
+        /// 
+        /// <paramref name="minimizeOtherChar"/> Indicate if the other character of the string should be minimised
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="character"></param>
+        /// <param name="minimizeOtherChar">Indicate if the other character of the string should be minimised</param>
+        /// <returns></returns>
+        public static string CapitalizeAfterCharacter(this string value, char character, bool minimizeOtherChar = false)
+        {
+            return CapitalizeAfterCharacters(value, new[] { character }, minimizeOtherChar);
+        }
+
+        /// <summary>
+        /// Returns string where : 
         ///     - first letter of each word is capitalized (word are separed by white space)
         ///     - all the other letters minimized
         /// </summary>
@@ -210,56 +269,7 @@ namespace StringExtensionsBspmLibrary
             return CapitalizeAfterCharacter(value, '\n', minimizeOtherChar);
         }
 
-        /// <summary>
-        /// Returns string where : 
-        /// - the first letter is capitalized
-        /// - each First letter after <paramref name="character"/> is capitalised
-        /// 
-        /// <paramref name="minimizeOtherChar"/> Indicate if the other character of the string should be minimised
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="character"></param>
-        /// <param name="minimizeOtherChar">Indicate if the other character of the string should be minimised</param>
-        /// <returns></returns>
-        private static string CapitalizeAfterCharacter(this string value, char character, bool minimizeOtherChar = false)
-        {
-            return CapitalizeAfterCharacters(value, new[] { character }, minimizeOtherChar);
-        }
 
-        /// <summary>
-        /// Returns string where : 
-        /// - the first letter is capitalized
-        /// - each first letter after a character in <paramref name="targetCharacters"/> is capitalised
-        /// 
-        /// <paramref name="minimizeOtherChar"/> Indicate if the other character of the string should be minimised
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="targetCharacters"></param>
-        /// <param name="minimizeOtherChar">Indicate if the other character of the string should be minimised</param>
-        /// <returns></returns>
-        private static string CapitalizeAfterCharacters(this string value, IEnumerable<char> targetCharacters, bool minimizeOtherChar = false)
-        {
-            var stringToCapitalize = value.ToCharArray();
-
-            if (string.IsNullOrEmpty(value) || targetCharacters.Count() < 1 || !stringToCapitalize.Intersect(targetCharacters).Any())
-                return value;
-            else
-            {
-                var stringCapitalized = new StringBuilder();
-                var lastCharacter = targetCharacters.First();
-                foreach (var character in stringToCapitalize)
-                {
-
-                    if (targetCharacters.Contains(lastCharacter))
-                        stringCapitalized.Append(char.ToUpper(character));
-                    else
-                        stringCapitalized.Append(minimizeOtherChar ? char.ToLower(character) : character);
-
-                    lastCharacter = character;
-                }
-                return stringCapitalized.ToString();
-            }
-        }
 
         #endregion
 
