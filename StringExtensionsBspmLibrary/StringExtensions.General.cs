@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace StringExtensionsBspmLibrary
@@ -182,47 +185,81 @@ namespace StringExtensionsBspmLibrary
 
         #region Case
 
-        ///// <summary>
-        ///// Returns a correctly formatted horse name : 
-        /////     - each first letter of a word capitalized
-        /////     - all the other letters minimized
-        ///// </summary>
-        ///// <param name="horseName"></param>
-        ///// <returns></returns>
-        //public static string CapitalizeEachWord(this string horseName)
-        //{
-        //    return CapitalizeAfterCharachter(horseName, ' ');
-        //}
+        /// <summary>
+        /// Returns string where : 
+        ///     - first letter of each word is capitalized (word are separed by white space)
+        ///     - all the other letters minimized
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string CapitalizeEachWord(this string value, bool minimizeOtherChar = false)
+        {
+            return CapitalizeAfterCharacters(value, new char[] { ' ', '\t', '\n', '\r' }, minimizeOtherChar);
+        }
 
 
-        ///// <summary>
-        ///// Returns string where : 
-        /////     - each first letter of a line is capitalized
-        /////     - all the other letters minimized
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static string CapitalizeEachLine(this string value)
-        //{
-        //    return CapitalizeAfterCharachter(value, '\n');
-        //}
+        /// <summary>
+        /// Returns string where : 
+        ///     - first letter of each line is capitalized
+        ///     - all the other letters minimized
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string CapitalizeEachLine(this string value, bool minimizeOtherChar = false)
+        {
+            return CapitalizeAfterCharacter(value, '\n', minimizeOtherChar);
+        }
 
-        ///// <summary>
-        ///// Returns string where : 
-        ///// - the first letter is capitalized
-        ///// - each First letter after <paramref name="character"/> is capitalised
-        ///// 
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //private static string CapitalizeAfterCharachter(this string value, char character)
-        //{
-        //    if (string.IsNullOrWhiteSpace(value))
-        //        return value;
+        /// <summary>
+        /// Returns string where : 
+        /// - the first letter is capitalized
+        /// - each First letter after <paramref name="character"/> is capitalised
+        /// 
+        /// <paramref name="minimizeOtherChar"/> Indicate if the other character of the string should be minimised
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="character"></param>
+        /// <param name="minimizeOtherChar">Indicate if the other character of the string should be minimised</param>
+        /// <returns></returns>
+        private static string CapitalizeAfterCharacter(this string value, char character, bool minimizeOtherChar = false)
+        {
+            return CapitalizeAfterCharacters(value, new[] { character }, minimizeOtherChar);
+        }
 
-        //    var splitted = value.Split(new char[] { character }, options: StringSplitOptions.RemoveEmptyEntries);
-        //    return string.Join(character.ToString(), splitted.Select(sentence => $"{char.ToUpper(sentence[0])}{sentence.Substring(1).ToLower()}"));
-        //}
+        /// <summary>
+        /// Returns string where : 
+        /// - the first letter is capitalized
+        /// - each first letter after a character in <paramref name="targetCharacters"/> is capitalised
+        /// 
+        /// <paramref name="minimizeOtherChar"/> Indicate if the other character of the string should be minimised
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetCharacters"></param>
+        /// <param name="minimizeOtherChar">Indicate if the other character of the string should be minimised</param>
+        /// <returns></returns>
+        private static string CapitalizeAfterCharacters(this string value, IEnumerable<char> targetCharacters, bool minimizeOtherChar = false)
+        {
+            var stringToCapitalize = value.ToCharArray();
+
+            if (string.IsNullOrEmpty(value) || targetCharacters.Count() < 1 || !stringToCapitalize.Intersect(targetCharacters).Any())
+                return value;
+            else
+            {
+                var stringCapitalized = new StringBuilder();
+                var lastCharacter = targetCharacters.First();
+                foreach (var character in stringToCapitalize)
+                {
+
+                    if (targetCharacters.Contains(lastCharacter))
+                        stringCapitalized.Append(char.ToUpper(character));
+                    else
+                        stringCapitalized.Append(minimizeOtherChar ? char.ToLower(character) : character);
+
+                    lastCharacter = character;
+                }
+                return stringCapitalized.ToString();
+            }
+        }
 
         #endregion
 

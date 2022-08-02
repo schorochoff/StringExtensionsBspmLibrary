@@ -11,8 +11,8 @@ namespace StringExtensionsBspmLibraryTests
         [TestMethod]
         public void StrinExtensions_General_OrNullIfEmpty()
         {
-            Assert.AreEqual(null, ((string?)null).OrNullIfEmpty());
-            Assert.AreEqual(null, "".OrNullIfEmpty());
+            Assert.IsNull(((string?)null).OrNullIfEmpty());
+            Assert.IsNull("".OrNullIfEmpty());
             Assert.AreEqual(" ", " ".OrNullIfEmpty());
             Assert.AreEqual("      ", "      ".OrNullIfEmpty());
             Assert.AreEqual("hello", "hello".OrNullIfEmpty());
@@ -26,6 +26,7 @@ namespace StringExtensionsBspmLibraryTests
             Assert.AreEqual(null, "".OrNullIfWhiteSpace());
             Assert.AreEqual(null, " ".OrNullIfWhiteSpace());
             Assert.AreEqual(null, "      ".OrNullIfWhiteSpace());
+            Assert.AreEqual(null, " \t\n\r".OrNullIfWhiteSpace());
             Assert.AreEqual("hello", "hello".OrNullIfWhiteSpace());
             Assert.AreEqual("  _ ", "  _ ".OrNullIfWhiteSpace());
         }
