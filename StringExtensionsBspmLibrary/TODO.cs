@@ -82,31 +82,6 @@
 
 
 
-        ///// <summary>
-        ///// Convert a string to an enum value.
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="description"></param>
-        ///// <returns></returns>
-        //public static T DescriptionToEnum<T>(this string description) where T : Enum
-        //{
-        //    foreach (var field in typeof(T).GetFields())
-        //    {
-        //        if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attribute)
-        //        {
-        //            if (attribute.Description == description)
-        //                return (T)field.GetValue(null);
-        //        }
-        //        else
-        //        {
-        //            if (field.Name == description)
-        //                return (T)field.GetValue(null);
-        //        }
-        //    }
-
-        //    return default;
-        //}
-
         ////File Info 
         ///// <summary/>
         //public static string RemoveInvalidChars(this string name)
@@ -126,98 +101,8 @@
         //               .Replace('*', ' ');
         //}
 
-        //////KeyValueExthensions
-        /////// <summary>
-        /////// Convert the configuration values (semicolon) to a list of {Key, Value}:
-        /////// Ex. A=MyValue1; B=MyValue2 
-        ///////     =>   { Key = "A", Value = "MyValue1"}
-        ///////          { Key = "B", Value = "MyValue2"}
-        /////// </summary> 
-        /////// <param name="values"></param>
-        /////// <returns></returns>
-        ////public static IEnumerable<CodeValue> SplitToCodeValues(this string? value)
-        ////{
-        ////    var values = value?.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-
-        ////    if (values != null)
-        ////    {
-        ////        return values.Select(i => SplitStringToCodeValue(i))
-        ////                     .Where(i => i.Key.Length > 0)
-        ////                     .ToArray();
-        ////    }
-        ////    else
-        ////    {
-        ////        return Array.Empty<CodeValue>();
-        ////    }
-
-        ////    // Split "key=value" to a CodeValue object
-        ////    CodeValue SplitStringToCodeValue(string value)
-        ////    {
-        ////        var index = value.IndexOf('=');
-        ////        if (index > 0)
-        ////        {
-        ////            return new CodeValue(value.Substring(0, index).Trim(),
-        ////                                 value.Substring(index + 1).Trim());
-        ////        }
-        ////        else
-        ////        {
-        ////            return new CodeValue(String.Empty, String.Empty);
-        ////        }
-        ////    }
-        ////}
-
-        /////// <summary>
-        /////// Convert the configuration values (semicolon) to a list of {Key, Value}:
-        /////// Ex. 1=MyValue1; 2=MyValue2 
-        ///////     =>   { Key = 1, Value = "MyValue1"}
-        ///////          { Key = 1, Value = "MyValue2"}
-        /////// </summary> 
-        /////// <param name="values"></param>
-        /////// <returns></returns>
-        ////public static IEnumerable<IdValue> SplitToIdValues(this string? value)
-        ////{
-        ////    var splitted = SplitToCodeValues(value);
-        ////    return splitted.Select(i => new IdValue(i.Key.TryParseToInt() ?? 0, i.Value));
-        ////}
-
-        /////// <summary />
-        ////public static IEnumerable<FlagValue> SplitToFlagValues(this string? value)
-        ////{
-        ////    var splitted = SplitToCodeValues(value);
-        ////    return splitted.Select(i => new FlagValue(i.Key.TryParseToInt() ?? 0, i.Value));
-        ////}
-
-        /////// <summary />
-        ////public static IEnumerable<KeyValue<int?, string>> SplitToIntValues(this string? value)
-        ////{
-        ////    var splitted = SplitToCodeValues(value);
-        ////    return splitted.Select(i => new KeyValue<int?, string>(i.Key.TryParseToInt(), i.Value));
-        ////}
-
-        ///// <summary />
-        //public static IEnumerable<T> SplitToEnums<T>(this string? value) where T : Enum
-        //{
-        //    if (value == null || value.Trim() == "")
-        //    {
-        //        return Array.Empty<T>();
-        //    }
-        //    else
-        //    {
-        //        return value.Split(new[] { ';', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-        //                    .Select(i => i.Trim().DescriptionToEnum<T>());
-        //    }
-        //}
 
 
-
-
-        ////Tests
-        ///// <summary />
-        //public static bool IsEquivalent(this string value1, string value2)
-        //{
-        //    return String.Compare(value1.Replace("\n", "").Replace("\r", "").Replace(" ", ""),
-        //                          value2.Replace("\n", "").Replace("\r", "").Replace(" ", "")) == 0;
-        //}
 
         /////// <summary />
         ////public static bool IsSameXml(this string expected, string actual)
