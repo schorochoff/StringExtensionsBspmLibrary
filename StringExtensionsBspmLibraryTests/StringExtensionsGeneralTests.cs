@@ -10,7 +10,7 @@ namespace StringExtensionsBspmLibraryTests
         #region Null, empty or white space
 
         [TestMethod]
-        public void StrinExtensions_General_OrNullIfEmpty()
+        public void StringExtensions_General_OrNullIfEmpty()
         {
             Assert.IsNull(((string?)null).OrNullIfEmpty());
             Assert.IsNull("".OrNullIfEmpty());
@@ -21,7 +21,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StrinExtensions_General_OrNullIfWhiteSpace()
+        public void StringExtensions_General_OrNullIfWhiteSpace()
         {
             Assert.AreEqual(null, ((string?)null).OrNullIfWhiteSpace());
             Assert.AreEqual(null, "".OrNullIfWhiteSpace());
@@ -39,7 +39,7 @@ namespace StringExtensionsBspmLibraryTests
         #region Truncate
 
         [TestMethod]
-        public void StringExtensions_Left()
+        public void StringExtensions_General_Left()
         {
             Assert.AreEqual("", "ABCDEF".Left(0));
             Assert.AreEqual("ABC", "ABCDEF".Left(3));
@@ -49,7 +49,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_Left_WithEllipsis()
+        public void StringExtensions_General_Left_WithEllipsis()
         {
             Assert.AreEqual("A.", "ABCD".Left(2, withEllipsis: true));
             Assert.AreEqual("AB.", "ABCD".Left(3, withEllipsis: true));
@@ -58,7 +58,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_Left_OutOfStringBoundaries()
+        public void StringExtensions_General_Left_OutOfStringBoundaries()
         {
             // Length OK
             Assert.AreEqual("", "ABCDEF".Left(0));
@@ -71,7 +71,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_Right()
+        public void StringExtensions_General_Right()
         {
             //Assert.AreEqual("", "ABCDEF".Right(-1));
             Assert.AreEqual("", "ABCDEF".Right(0));
@@ -82,7 +82,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_Right_WithEllipsis()
+        public void StringExtensions_General_Right_WithEllipsis()
         {
             Assert.AreEqual(".D", "ABCD".Right(2, withEllipsis: true));
             Assert.AreEqual(".CD", "ABCD".Right(3, withEllipsis: true));
@@ -91,7 +91,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_Right_OutOfStringBoundaries()
+        public void StringExtensions_General_Right_OutOfStringBoundaries()
         {
             // Length OK
             Assert.AreEqual("", "ABCDEF".Right(0));
@@ -472,7 +472,7 @@ namespace StringExtensionsBspmLibraryTests
 
         #endregion
 
-        #region GetFirstLetterAfterSeparators
+        #region GetFirstLettersAfterSeparators
 
         [TestMethod]
         [DataRow("A")]
@@ -482,7 +482,7 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("Abc_def")]
         [DataRow("ABC DEF")]
         [DataRow("A w'nt change. \n NEVER!")]
-        public void StringExtensions_General_GetFirstLetterAfterSeparators_NoSeparators(string mockedValue)
+        public void StringExtensions_General_GetFirstLettersAfterSeparators_NoSeparators(string mockedValue)
         {
             Assert.AreEqual("A", mockedValue.GetFirstLettersAfterSeparators(Enumerable.Empty<char>()));
         }
@@ -495,14 +495,14 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("Abc_def")]
         [DataRow("ABC DEF")]
         [DataRow("A w'nt change. \n NEVER!")]
-        public void StringExtensions_General_GetFirstLetterAfterSeparators_OneSeparators_Unused(string mockedValue)
+        public void StringExtensions_General_GetFirstLettersAfterSeparators_OneSeparators_Unused(string mockedValue)
         {
             Assert.AreEqual("A", mockedValue.GetFirstLettersAfterSeparators(new char[] { 'x' }));
         }
 
 
         [TestMethod]
-        public void StringExtensions_General_GetFirstLetterAfterSeparators_OneSeparators_Used()
+        public void StringExtensions_General_GetFirstLettersAfterSeparators_OneSeparators_Used()
         {
             Assert.AreEqual("", " ".GetFirstLettersAfterSeparators(new char[] { ' ' }));
             Assert.AreEqual("", "-".GetFirstLettersAfterSeparators(new char[] { '-' }));
@@ -517,12 +517,12 @@ namespace StringExtensionsBspmLibraryTests
             Assert.AreEqual("Adg", "Abc-dEf-ghI".GetFirstLettersAfterSeparators(new char[] { '-' }));
             Assert.AreEqual("Adg", "Abc   def   ghi".GetFirstLettersAfterSeparators(new char[] { ' ' }));
             Assert.AreEqual("HwIly", "Hello world, I love you 2 !".GetFirstLettersAfterSeparators(new char[] { ' ' }), "Shoud ignore Non-Letter");
-            Assert.AreEqual("P", "100%Promo".GetFirstLettersAfterSeparators(new char[] { ' '}), "Shoud bypass Non-Letter");
+            Assert.AreEqual("P", "100%Promo".GetFirstLettersAfterSeparators(new char[] { ' ' }), "Shoud bypass Non-Letter");
             Assert.AreEqual("YP", "Yeh 100%Promo".GetFirstLettersAfterSeparators(new char[] { ' ' }), "Shoud bypass Non-Letter");
         }
 
         [TestMethod]
-        public void StringExtensions_General_GetFirstLetterAfterSeparators_SeveralSeparators()
+        public void StringExtensions_General_GetFirstLettersAfterSeparators_SeveralSeparators()
         {
 
             Assert.AreEqual("Hhw", "Hello-hi-world".GetFirstLettersAfterSeparators(new char[] { '-', '+' }));
