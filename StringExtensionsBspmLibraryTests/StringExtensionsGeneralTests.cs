@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StringExtensionsBspmLibrary;
+using System;
 using System.Linq;
 
 namespace StringExtensionsBspmLibraryTests
@@ -104,6 +105,35 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         #endregion
+
+        [TestMethod]
+        public void StringExtensions_General_Resize_End()
+        {
+            Assert.AreEqual("", "ABCDEF".Resize(0));
+            Assert.AreEqual("A", "ABCDEF".Resize(1));
+            Assert.AreEqual("ABC", "ABCDEF".Resize(3));
+            Assert.AreEqual("ABCDE", "ABCDEF".Resize(5));
+            Assert.AreEqual("ABCDEF", "ABCDEF".Resize(6));
+            Assert.AreEqual("ABCDEF    ", "ABCDEF".Resize(10));
+            Assert.AreEqual("ABCDEF----", "ABCDEF".Resize(10, paddingChar: '-'));
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => "ABCDEF".Resize(-6));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_Resize_Start()
+        {
+            Assert.AreEqual("", "ABCDEF".Resize(0, isEndModified : false));
+            Assert.AreEqual("F", "ABCDEF".Resize(1, isEndModified: false));
+            Assert.AreEqual("DEF", "ABCDEF".Resize(3, isEndModified: false));
+            Assert.AreEqual("BCDEF", "ABCDEF".Resize(5, isEndModified: false));
+            Assert.AreEqual("ABCDEF", "ABCDEF".Resize(6, isEndModified: false));
+            Assert.AreEqual("    ABCDEF", "ABCDEF".Resize(10, isEndModified: false));
+            Assert.AreEqual("----ABCDEF", "ABCDEF".Resize(10, paddingChar: '-', isEndModified: false));
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => "ABCDEF".Resize(-6));
+        }
+
 
         #endregion
 
@@ -671,56 +701,54 @@ namespace StringExtensionsBspmLibraryTests
 
         #endregion
 
+        #region ContainsIgnoreAccents
 
+        [TestMethod]
+        public void StringExtensions_ContainsIgnoreAccents_DefaultBehaviorIgnoreCase()
+        {
+            // Normal use (without checking the case-sensitiveness)
+            Assert.IsTrue("".ContainsIgnoreAccents(""));
+            Assert.IsTrue("Romain".ContainsIgnoreAccents("Rom"));
+            Assert.IsTrue("Romain".ContainsIgnoreAccents("oma"));
+            Assert.IsTrue("Romain".ContainsIgnoreAccents("main"));
 
+            // Source have special and lower/upper characters
+            Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents(""));
+            Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("rom"));
+            Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("Rom"));
+            Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("main"));
+            Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("main12"));
+            Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("ROMAIN1234"));
 
+            // Target have special and lower/upper characters
+            Assert.IsTrue("ROMAIN1234".ContainsIgnoreAccents("Rôm"));
+            Assert.IsTrue("ROMAIN1234".ContainsIgnoreAccents("àÏn"));
+            Assert.IsTrue("ROMAIN1234".ContainsIgnoreAccents("Ïn1234"));
+            Assert.IsTrue("ROMAIN1234".ContainsIgnoreAccents("RômàÏn1234"));
 
+            // Some other tests
+            Assert.IsFalse("".ContainsIgnoreAccents("roman"));
+            Assert.IsFalse("Romain1234".ContainsIgnoreAccents("roman"));
+            Assert.IsFalse("RômàÏn1234".ContainsIgnoreAccents("roman"));
+            Assert.IsFalse("RômàÏn1234".ContainsIgnoreAccents("mn"));
+        }
 
+        [TestMethod]
+        [DataRow("MÂIN")]
+        [DataRow("maÏn")]
+        public void StringExtensions_ContainsIgnoreAccents_IgnoreCase(string value)
+        {
+            Assert.IsTrue("RomaÏn".ContainsIgnoreAccents(value, ignoreCase: true));
+        }
 
-        //[TestMethod]
-        //public void StringExtensions_ContainsIgnoreSymbols_DefaultBehaviorIgnoreCase()
-        //{
-        //    // Normal use (without checking the case-sensitiveness)
-        //    Assert.IsTrue("".ContainsIgnoreAccents(""));
-        //    Assert.IsTrue("Romain".ContainsIgnoreAccents("Rom"));
-        //    Assert.IsTrue("Romain".ContainsIgnoreAccents("oma"));
-        //    Assert.IsTrue("Romain".ContainsIgnoreAccents("main"));
+        [TestMethod]
+        [DataRow("mâIn")]
+        [DataRow("Röm")]
+        public void StringExtensions_ContainsIgnoreAccents_KeepCase(string value)
+        {
+            Assert.IsTrue("RomaÏn".ContainsIgnoreAccents(value, ignoreCase: false));
+        }
 
-        //    // Source have special and lower/upper characters
-        //    Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents(""));
-        //    Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("rom"));
-        //    Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("Rom"));
-        //    Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("main"));
-        //    Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("main12"));
-        //    Assert.IsTrue("RômàÏn1234".ContainsIgnoreAccents("ROMAIN1234"));
-
-        //    // Target have special and lower/upper characters
-        //    Assert.IsTrue("ROMAIN1234".ContainsIgnoreAccents("Rôm"));
-        //    Assert.IsTrue("ROMAIN1234".ContainsIgnoreAccents("àÏn"));
-        //    Assert.IsTrue("ROMAIN1234".ContainsIgnoreAccents("Ïn1234"));
-        //    Assert.IsTrue("ROMAIN1234".ContainsIgnoreAccents("RômàÏn1234"));
-
-        //    // Some other tests
-        //    Assert.IsFalse("".ContainsIgnoreAccents("roman"));
-        //    Assert.IsFalse("Romain1234".ContainsIgnoreAccents("roman"));
-        //    Assert.IsFalse("RômàÏn1234".ContainsIgnoreAccents("roman"));
-        //    Assert.IsFalse("RômàÏn1234".ContainsIgnoreAccents("mn"));
-        //}
-
-        //[TestMethod]
-        //[DataRow("MÂIN")]
-        //[DataRow("maÏn")]
-        //public void StringExtensions_ContainsIgnoreSymbols_IgnoreCase(string value)
-        //{
-        //    Assert.IsTrue("RomaÏn".ContainsIgnoreAccents(value, ignoreCase: true));
-        //}
-
-        //[TestMethod]
-        //[DataRow("mâIn")]
-        //[DataRow("Röm")]
-        //public void StringExtensions_ContainsIgnoreSymbols_KeepCase(string value)
-        //{
-        //    Assert.IsTrue("RomaÏn".ContainsIgnoreAccents(value, ignoreCase: false));
-        //}
+        #endregion
     }
 }

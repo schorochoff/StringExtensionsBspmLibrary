@@ -93,49 +93,46 @@ namespace StringExtensionsBspmLibrary
 
         #endregion
 
-        ///// <summary>
-        ///// Returns the <paramref name="count"/> first characters or the <paramref name="value"/> string filled with extra <paramref name="paddingChar"/> AFTER the value, to have a lenght of <paramref name="count"/>.
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <param name="count">Number of characters to returns</param>
-        ///// <param name="paddingChar">A Unicode padding character.</param>
-        ///// <returns></returns>
-        //public static string LeftOrPadRight(this string value, int count, char paddingChar = ' ')
-        //{
-        //    if (!string.IsNullOrEmpty(value))
-        //    {
-        //        if (value.Length > count)
-        //            return value.Substring(0, count);
-        //        else
-        //            return value.PadRight(count, paddingChar);
-        //    }
-        //    else
-        //    {
-        //        return new string(paddingChar, count);
-        //    }
-        //}
+        /// <summary>
+        /// Resize the string <paramref name="value"/> such that it have a <paramref name="count"/> characters.
+        /// Resizing is made by modifying the end of the string :
+        /// - truncate 
+        /// - add padding characters <paramref name="paddingChar"/>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="count">Number of characters to returns</param>
+        /// <param name="isEndModified">Indicate if the resizing should impact the end of the string. When set to false the begining of the string would be modified.</param>
+        /// <param name="paddingChar">A Unicode padding character.</param>
+        /// <returns></returns>
+        public static string Resize(this string value, int count, bool isEndModified = true, char paddingChar = ' ')
+        {
+            if (count < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(count)} can't be negative");
 
-        ///// <summary>
-        ///// Returns the <paramref name="count"/> first characters or the <paramref name="value"/> string filled with extra <paramref name="paddingChar"/> BEFORE the value, to have a lenght of <paramref name="count"/>.
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <param name="count">Number of characters to returns</param>
-        ///// <param name="paddingChar">A Unicode padding character.</param>
-        ///// <returns></returns>
-        //public static string LeftOrPadLeft(this string value, int count, char paddingChar = ' ')
-        //{
-        //    if (!string.IsNullOrEmpty(value))
-        //    {
-        //        if (value.Length > count)
-        //            return value.Substring(0, count);
-        //        else
-        //            return value.PadLeft(count, paddingChar);
-        //    }
-        //    else
-        //    {
-        //        return new string(paddingChar, count);
-        //    }
-        //}
+            if (string.IsNullOrEmpty(value))
+            {
+                return new string(paddingChar, count);
+            }
+            else
+            {
+                if (isEndModified)
+                {
+                    if (value.Length > count)
+                        return value.Substring(0, count);
+                    else
+                        return value.PadRight(count, paddingChar);
+                }
+                else
+                {
+                    if (value.Length > count)
+                        return value.Substring(value.Length - count, count);
+                    else
+                        return value.PadLeft(count, paddingChar);
+                }
+
+            }
+        }
 
         #endregion
 
@@ -470,77 +467,21 @@ namespace StringExtensionsBspmLibrary
         #endregion
 
 
-        ///// <summary />
-        //public static string[] SplitInParts(this string value, string separator, int numberOfParts)
-        //{
-        //    if (value == null)
-        //        return new string[numberOfParts];
-
-        //    var parts = value.Split(separator);
-
-        //    if (parts.Length == numberOfParts)
-        //        return parts;
-
-        //    else if (parts.Length > numberOfParts)
-        //        return parts.Take(numberOfParts).ToArray();
-
-        //    else
-        //    {
-        //        return parts.Concat(new string[numberOfParts - parts.Length]).ToArray();
-        //    }
-        //}
-
-        ///// <summary />
-        //public static Tuple<string, string, string, string> ToWbs(this string value)
-        //{
-        //    var parts = SplitInParts(value, ".", 4);
-        //    return new Tuple<string, string, string, string>(parts[0], parts[1], parts[2], parts[3]);
-        //}
-
-
-        ///// <summary>
-        ///// Returns a value indicating whether a specified substring occurs within this string.
-        ///// </summary>
-        ///// <param name="source"></param>
-        ///// <param name="value">The string to seek.</param>
-        ///// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false.</returns>
-        //public static bool ContainsIgnoreAccents(this string source, string value)
-        //{
-        //    return source.ContainsIgnoreAccents(value, ignoreCase: true);
-        //}
-
-        ///// <summary>
-        ///// Returns a value indicating whether a specified substring occurs within this string.
-        ///// </summary>
-        ///// <param name="source"></param>
-        ///// <param name="value">The string to seek.</param>
-        ///// <param name="ignoreCase">The string to seek.</param>
-        ///// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false.</returns>
-        //public static bool ContainsIgnoreAccents(this string source, string value, bool ignoreCase)
-        //{
-        //    var compareOptions = CompareOptions.IgnoreNonSpace;
-        //    if (ignoreCase)
-        //    {
-        //        compareOptions |= CompareOptions.IgnoreCase;
-        //    }
-        //    return CultureInfo.InvariantCulture.CompareInfo.IndexOf(source, value, compareOptions) != -1;
-        //}
-
-
-        ///// <summary />
-        //public static bool ContainsInvariant(this string source, string value)
-        //{
-        //    var compareInfo = CultureInfo.InvariantCulture.CompareInfo;
-        //    var options = CompareOptions.IgnoreCase |
-        //                  CompareOptions.IgnoreSymbols |
-        //                  CompareOptions.IgnoreNonSpace;
-        //    return compareInfo.IndexOf(source, value, options) >= 0;
-        //}
-
-        ///// <summary />
-        //public static bool IsEqual(this string source, string value)
-        //{
-        //    return String.Compare(source, value, CultureInfo.CurrentCulture, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0;
-        //}
+        /// <summary>
+        /// Returns a value indicating whether a specified substring occurs within this string.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="value">The string to seek.</param>
+        /// <param name="ignoreCase">Indicate if "A" and "a" should be considered as equals</param>
+        /// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false.</returns>
+        public static bool ContainsIgnoreAccents(this string source, string value, bool ignoreCase = true)
+        {
+            var compareOptions = CompareOptions.IgnoreNonSpace;
+            if (ignoreCase)
+            {
+                compareOptions |= CompareOptions.IgnoreCase;
+            }
+            return CultureInfo.InvariantCulture.CompareInfo.IndexOf(source, value, compareOptions) != -1;
+        }
     }
 }
