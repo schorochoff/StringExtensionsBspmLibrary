@@ -189,21 +189,21 @@ namespace StringExtensionsBspmLibrary
         /// <summary>
         /// Returns string where : 
         /// - the first letter is capitalized
-        /// - each first letter after a character in <paramref name="targetCharacters"/> is capitalised
+        /// - each first letter after a character in <paramref name="separators"/> is capitalised
         /// 
         /// <paramref name="minimizeOtherChar"/> Indicate if the other character of the string should be minimised
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="targetCharacters"></param>
+        /// <param name="separators"></param>
         /// <param name="minimizeOtherChar">Indicate if the other character of the string should be minimised</param>
         /// <returns></returns>
-        public static string CapitalizeAfterCharacters(this string value, IEnumerable<char> targetCharacters, bool minimizeOtherChar = false)
+        public static string CapitalizeAfterCharacters(this string value, IEnumerable<char> separators, bool minimizeOtherChar = false)
         {
             var stringToCapitalize = value.ToCharArray();
 
             if (string.IsNullOrEmpty(value))
                 return value;
-            else if (!targetCharacters.Any() || !stringToCapitalize.Intersect(targetCharacters).Any())
+            else if (!separators.Any() || !stringToCapitalize.Intersect(separators).Any())
             {
                 var firstChar = value.Substring(0, 1).ToUpper();
                 var otherChars = value.Substring(1, value.Length - 1);
@@ -214,11 +214,11 @@ namespace StringExtensionsBspmLibrary
             else
             {
                 var stringCapitalized = new StringBuilder();
-                var lastCharacter = targetCharacters.First();
+                var lastCharacter = separators.First();
                 foreach (var character in stringToCapitalize)
                 {
 
-                    if (targetCharacters.Contains(lastCharacter))
+                    if (separators.Contains(lastCharacter))
                         stringCapitalized.Append(char.ToUpper(character));
                     else
                         stringCapitalized.Append(minimizeOtherChar ? char.ToLower(character) : character);
@@ -232,17 +232,17 @@ namespace StringExtensionsBspmLibrary
         /// <summary>
         /// Returns string where : 
         /// - the first letter is capitalized
-        /// - each First letter after <paramref name="character"/> is capitalised
+        /// - each First letter after character <paramref name="separator"/> is capitalised
         /// 
         /// <paramref name="minimizeOtherChar"/> Indicate if the other character of the string should be minimised
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="character"></param>
+        /// <param name="separator"></param>
         /// <param name="minimizeOtherChar">Indicate if the other character of the string should be minimised</param>
         /// <returns></returns>
-        public static string CapitalizeAfterCharacter(this string value, char character, bool minimizeOtherChar = false)
+        public static string CapitalizeAfterCharacter(this string value, char separator, bool minimizeOtherChar = false)
         {
-            return CapitalizeAfterCharacters(value, new[] { character }, minimizeOtherChar);
+            return CapitalizeAfterCharacters(value, new[] { separator }, minimizeOtherChar);
         }
 
         /// <summary>
@@ -286,34 +286,60 @@ namespace StringExtensionsBspmLibrary
         public static string GetFirstLetterOfEachWord(this string value)
         {
             var separators = new[] { ' ', '\t', '\n', '\r' };
-            return GetFirstLetterAfterSeparators(value, separators);
+            return GetFirstLettersAfterSeparators(value, separators);
         }
 
         /// <summary>
         /// Return a string composed by the first LETTER of each word. 
         /// (the characters indicating the separation between words are defined in <paramref name="separators"/>).
+        /// 
+        /// Ex :    "Hello world,I love you 2 !".GetFirstLettersAfterSeparators(new char[] {' ', ','}) -> HwIly
+        ///         "Yeh 100%Promo".GetFirstLettersAfterSeparators(new char[] {' ', ','}) -> YP
         /// </summary>
         /// <param name="value"></param>
         /// <param name="separators">The characters indicating the separation between words</param>
         /// <returns></returns>
-        public static string GetFirstLetterAfterSeparators(this string value, char[] separators)
+        public static string GetFirstLettersAfterSeparators(this string value, IEnumerable<char> separators)
         {
-            var firstLetters = value.Split(separators)
-                                    .Select(word => word.KeepFirstLetterOnly());
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            // String made of separator characters
+            if (!value.ToCharArray().Except(separators).Any())
+                return string.Empty;
+
+            if (!separators.Any())
+                return value.FirstLetter()?.ToString() ?? string.Empty;
+
+            var firstLetters = value.Split(separators.ToArray())
+                                    .Select(word => word.FirstLetter());
             return string.Join("", firstLetters);
         }
 
         /// <summary>
-        /// Return a string composed by the first characters present after a separator <paramref name="separators"/>
+        /// Return a string composed by 
+        /// - the first character of <paramref name="value"/>>
+        /// - the first characters (excluding <paramref name="separators"/> present after a separator <paramref name="separators"/>
         /// 
-        /// Ex : GetFirstCharachtersAfterSeparators("Hello world,I love you", new char[] {' ', ','}) -> HwIly
+        /// Ex :    "Hello world,I love you 2 !".GetFirstCharactersAfterSeparators(new char[] {' ', ','}) -> HwIly2!
+        ///         "Yeh 100%Promo".GetFirstLettersAfterSeparators(new char[] {' ', ','}) -> Y1
         /// </summary>
         /// <param name="value"></param>
         /// <param name="separators"></param>
         /// <returns></returns>
-        public static string GetFirstCharactersAfterSeparators(this string value, char[] separators)
+        public static string GetFirstCharactersAfterSeparators(this string value, IEnumerable<char> separators)
         {
-            var words = value.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            // String made of separator characters
+            if (!value.ToCharArray().Except(separators).Any())
+                return string.Empty;
+
+            if (!separators.Any())
+                return value.First().ToString();
+
+            var words = value.Split(separators.ToArray(), StringSplitOptions.RemoveEmptyEntries);
             var firstCharacters = words.Select(word => word[0]);
             return string.Join("", firstCharacters);
         }
@@ -338,7 +364,7 @@ namespace StringExtensionsBspmLibrary
         /// <summary>
         /// Remove accent from a text
         /// 
-        /// Ex :Gaelle, ma cherie ! Ou va tu comme ca ? -> Gaëlle, ma chérie ! Où va tu comme ça ?
+        /// Ex : Gaëlle, ma chérie ! Où va tu comme ça ? -> Gaelle, ma cherie ! Ou va tu comme ca ?
         /// 
         /// Source: http://archives.miloush.net/michkap/archive/2007/05/14/2629747.html
         /// </summary>
@@ -387,7 +413,10 @@ namespace StringExtensionsBspmLibrary
         /// <returns></returns>
         public static string KeepLettersOnly(this string value, bool withAccentedLetters = true)
         {
-            return Regex.Replace(value.KeepLettersOrDigitsOnly(withAccentedLetters), "[0-9]", string.Empty);
+            if (withAccentedLetters)
+                return Regex.Replace(value, @"[^\w]*[0-9_]*", string.Empty);
+            else
+                return Regex.Replace(value, "[^0a-zA-Z]", string.Empty);
         }
 
         /// <summary>
@@ -395,7 +424,7 @@ namespace StringExtensionsBspmLibrary
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static char? KeepFirstLetterOnly(this string value)
+        public static char? FirstLetter(this string value)
         {
             var letters = value.KeepLettersOnly();
             if (string.IsNullOrEmpty(letters))
@@ -410,7 +439,7 @@ namespace StringExtensionsBspmLibrary
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static char? KeepLastLetterOnly(this string value)
+        public static char? LastLetter(this string value)
         {
             var letters = value.KeepLettersOnly();
             if (string.IsNullOrEmpty(letters))

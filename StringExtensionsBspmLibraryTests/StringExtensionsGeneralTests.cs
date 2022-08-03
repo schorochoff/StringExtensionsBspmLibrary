@@ -182,13 +182,13 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("Abc_def")]
         [DataRow("ABC DEF")]
         [DataRow("I w'nt change. \n NEVER!")]
-        public void StringExtensions_General_CapitalizeAfterCharacters_NoTargetCharacters(string mockedValue)
+        public void StringExtensions_General_CapitalizeAfterCharacters_NoSeparators(string mockedValue)
         {
             Assert.AreEqual(mockedValue, mockedValue.CapitalizeAfterCharacters(Enumerable.Empty<char>()));
         }
 
         [TestMethod]
-        public void StringExtensions_General_CapitalizeAfterCharacters_NoTargetCharacters_Minimize()
+        public void StringExtensions_General_CapitalizeAfterCharacters_NoSeparators_Minimize()
         {
             Assert.AreEqual("A", "A".CapitalizeAfterCharacters(Enumerable.Empty<char>(), minimizeOtherChar: true));
             Assert.AreEqual("A b", "A B".CapitalizeAfterCharacters(Enumerable.Empty<char>(), minimizeOtherChar: true));
@@ -207,13 +207,13 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("Abc_def")]
         [DataRow("ABC DEF")]
         [DataRow("I w'nt change. \n NEVER!")]
-        public void StringExtensions_General_CapitalizeAfterCharacters_OneTargetCharacters_Unused(string mockedValue)
+        public void StringExtensions_General_CapitalizeAfterCharacters_OneSeparators_Unused(string mockedValue)
         {
             Assert.AreEqual(mockedValue, mockedValue.CapitalizeAfterCharacters(new char[] { 'x' }));
         }
 
         [TestMethod]
-        public void StringExtensions_General_CapitalizeAfterCharacters_OneTargetCharacters_Unused_Minimize()
+        public void StringExtensions_General_CapitalizeAfterCharacters_OneSeparators_Unused_Minimize()
         {
             Assert.AreEqual("A", "A".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar: true));
             Assert.AreEqual("A b", "A B".CapitalizeAfterCharacters(new char[] { 'x' }, minimizeOtherChar: true));
@@ -226,7 +226,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_General_CapitalizeAfterCharacters_OneTargetCharacters_Used()
+        public void StringExtensions_General_CapitalizeAfterCharacters_OneSeparators_Used()
         {
             Assert.AreEqual("A ", "A ".CapitalizeAfterCharacters(new char[] { ' ' }));
             Assert.AreEqual("HELLO ", "HELLO ".CapitalizeAfterCharacters(new char[] { ' ' }));
@@ -241,7 +241,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_General_CapitalizeAfterCharacters_OneTargetCharacters_Used_Minimize()
+        public void StringExtensions_General_CapitalizeAfterCharacters_OneSeparators_Used_Minimize()
         {
             Assert.AreEqual("A", "A".CapitalizeAfterCharacters(new char[] { ' ' }, minimizeOtherChar: true));
             Assert.AreEqual("Hello ", "HELLO ".CapitalizeAfterCharacters(new char[] { ' ' }, minimizeOtherChar: true));
@@ -256,7 +256,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_General_CapitalizeAfterCharacters_SeveralTargetCharacters()
+        public void StringExtensions_General_CapitalizeAfterCharacters_SeveralSeparators()
         {
             Assert.AreEqual("A", "a".CapitalizeAfterCharacters(new char[] { '-', '+' }));
             Assert.AreEqual("A", "A".CapitalizeAfterCharacters(new char[] { '-', '+' }));
@@ -280,7 +280,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_General_CapitalizeAfterCharacters_SeveralTargetCharacters_Minimize()
+        public void StringExtensions_General_CapitalizeAfterCharacters_SeveralSeparators_Minimize()
         {
             Assert.AreEqual("Hello", "hello".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar: true));
             Assert.AreEqual("Hello", "HELLO".CapitalizeAfterCharacters(new char[] { '-', '+' }, minimizeOtherChar: true));
@@ -330,13 +330,13 @@ namespace StringExtensionsBspmLibraryTests
         [DataRow("Abc_def")]
         [DataRow("ABC DEF")]
         [DataRow("I w'nt change. \n NEVER!")]
-        public void StringExtensions_General_CapitalizeAfterCharacter_TargetCharacterUnused(string mockedValue)
+        public void StringExtensions_General_CapitalizeAfterCharacter_SeparatorUnused(string mockedValue)
         {
             Assert.AreEqual(mockedValue, mockedValue.CapitalizeAfterCharacter('x'));
         }
 
         [TestMethod]
-        public void StringExtensions_General_CapitalizeAfterCharacter_OneTargetCharacters_Unused_Minimize()
+        public void StringExtensions_General_CapitalizeAfterCharacter_OneSeparators_Unused_Minimize()
         {
             Assert.AreEqual("A", "A".CapitalizeAfterCharacter('x', minimizeOtherChar: true));
             Assert.AreEqual("A b", "A B".CapitalizeAfterCharacter('x', minimizeOtherChar: true));
@@ -349,7 +349,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_General_CapitalizeAfterCharacter_TargetCharactersUsed()
+        public void StringExtensions_General_CapitalizeAfterCharacter_SeparatorsUsed()
         {
             Assert.AreEqual(" ", " ".CapitalizeAfterCharacter(' '));
             Assert.AreEqual("A ", "A ".CapitalizeAfterCharacter(' '));
@@ -365,7 +365,7 @@ namespace StringExtensionsBspmLibraryTests
         }
 
         [TestMethod]
-        public void StringExtensions_General_CapitalizeAfterCharacter_TargetCharacterUsed_Minimize()
+        public void StringExtensions_General_CapitalizeAfterCharacter_SeparatorUsed_Minimize()
         {
             Assert.AreEqual("A", "A".CapitalizeAfterCharacter(' ', minimizeOtherChar: true));
             Assert.AreEqual("Hello ", "HELLO ".CapitalizeAfterCharacter(' ', minimizeOtherChar: true));
@@ -411,6 +411,145 @@ namespace StringExtensionsBspmLibraryTests
         #endregion
 
         #region Abreviation
+
+        #region GetFirstCharactersAfterSeparators
+
+        [TestMethod]
+        [DataRow("A")]
+        [DataRow("A B")]
+        [DataRow("Abc def")]
+        [DataRow("Abc Def")]
+        [DataRow("Abc_def")]
+        [DataRow("ABC DEF")]
+        [DataRow("A w'nt change. \n NEVER!")]
+        public void StringExtensions_General_GetFirstCharactersAfterSeparators_NoSeparators(string mockedValue)
+        {
+            Assert.AreEqual("A", mockedValue.GetFirstCharactersAfterSeparators(Enumerable.Empty<char>()));
+        }
+
+        [TestMethod]
+        [DataRow("A")]
+        [DataRow("A B")]
+        [DataRow("Abc def")]
+        [DataRow("Abc Def")]
+        [DataRow("Abc_def")]
+        [DataRow("ABC DEF")]
+        [DataRow("A w'nt change. \n NEVER!")]
+        public void StringExtensions_General_GetFirstCharactersAfterSeparators_OneSeparators_Unused(string mockedValue)
+        {
+            Assert.AreEqual("A", mockedValue.GetFirstCharactersAfterSeparators(new char[] { 'x' }));
+        }
+
+
+        [TestMethod]
+        public void StringExtensions_General_GetFirstCharactersAfterSeparators_OneSeparators_Used()
+        {
+            Assert.AreEqual("", " ".GetFirstCharactersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("", "-".GetFirstCharactersAfterSeparators(new char[] { '-' }));
+            Assert.AreEqual("", "    ".GetFirstCharactersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("Ab", "A b".GetFirstCharactersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("123", "1 2 3".GetFirstCharactersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("100%", "1 0 0 %".GetFirstCharactersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("Ad", "Abc def".GetFirstCharactersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("AD", "ABC DEF".GetFirstCharactersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("Ad", "Abc_def".GetFirstCharactersAfterSeparators(new char[] { '_' }));
+            Assert.AreEqual("Ag", "Abc_def-ghi".GetFirstCharactersAfterSeparators(new char[] { '-' }));
+            Assert.AreEqual("Adg", "Abc-dEf-ghI".GetFirstCharactersAfterSeparators(new char[] { '-' }));
+            Assert.AreEqual("Adg", "Abc   def   ghi".GetFirstCharactersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("HwIly2!", "Hello world, I love you 2 !".GetFirstCharactersAfterSeparators(new char[] { ' ' }));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_GetFirstCharactersAfterSeparators_SeveralSeparators()
+        {
+
+            Assert.AreEqual("Hhw!", "Hello-hi-world-!".GetFirstCharactersAfterSeparators(new char[] { '-', '+' }));
+            Assert.AreEqual("hhw!", "hello-hi+world-!".GetFirstCharactersAfterSeparators(new char[] { '-', '+' }));
+            Assert.AreEqual("hhw!", "hello---hi++++world-!".GetFirstCharactersAfterSeparators(new char[] { '-', '+' }));
+            Assert.AreEqual("HwIly2!", "Hello world,I love you 2 !".GetFirstCharactersAfterSeparators(new char[] { ' ', ',' }));
+            Assert.AreEqual("Y1", "Yeh 100%Promo".GetFirstCharactersAfterSeparators(new char[] { ' ', ',' }));
+        }
+
+        #endregion
+
+        #region GetFirstLetterAfterSeparators
+
+        [TestMethod]
+        [DataRow("A")]
+        [DataRow("A B")]
+        [DataRow("Abc def")]
+        [DataRow("Abc Def")]
+        [DataRow("Abc_def")]
+        [DataRow("ABC DEF")]
+        [DataRow("A w'nt change. \n NEVER!")]
+        public void StringExtensions_General_GetFirstLetterAfterSeparators_NoSeparators(string mockedValue)
+        {
+            Assert.AreEqual("A", mockedValue.GetFirstLettersAfterSeparators(Enumerable.Empty<char>()));
+        }
+
+        [TestMethod]
+        [DataRow("A")]
+        [DataRow("A B")]
+        [DataRow("Abc def")]
+        [DataRow("Abc Def")]
+        [DataRow("Abc_def")]
+        [DataRow("ABC DEF")]
+        [DataRow("A w'nt change. \n NEVER!")]
+        public void StringExtensions_General_GetFirstLetterAfterSeparators_OneSeparators_Unused(string mockedValue)
+        {
+            Assert.AreEqual("A", mockedValue.GetFirstLettersAfterSeparators(new char[] { 'x' }));
+        }
+
+
+        [TestMethod]
+        public void StringExtensions_General_GetFirstLetterAfterSeparators_OneSeparators_Used()
+        {
+            Assert.AreEqual("", " ".GetFirstLettersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("", "-".GetFirstLettersAfterSeparators(new char[] { '-' }));
+            Assert.AreEqual("", "    ".GetFirstLettersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("Ab", "A b".GetFirstLettersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("", "1 2 3".GetFirstLettersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("", "1 0 0 %".GetFirstLettersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("Ad", "Abc def".GetFirstLettersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("AD", "ABC DEF".GetFirstLettersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("Ad", "Abc_def".GetFirstLettersAfterSeparators(new char[] { '_' }));
+            Assert.AreEqual("Ag", "Abc_def-ghi".GetFirstLettersAfterSeparators(new char[] { '-' }));
+            Assert.AreEqual("Adg", "Abc-dEf-ghI".GetFirstLettersAfterSeparators(new char[] { '-' }));
+            Assert.AreEqual("Adg", "Abc   def   ghi".GetFirstLettersAfterSeparators(new char[] { ' ' }));
+            Assert.AreEqual("HwIly", "Hello world, I love you 2 !".GetFirstLettersAfterSeparators(new char[] { ' ' }), "Shoud ignore Non-Letter");
+            Assert.AreEqual("P", "100%Promo".GetFirstLettersAfterSeparators(new char[] { ' '}), "Shoud bypass Non-Letter");
+            Assert.AreEqual("YP", "Yeh 100%Promo".GetFirstLettersAfterSeparators(new char[] { ' ' }), "Shoud bypass Non-Letter");
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_GetFirstLetterAfterSeparators_SeveralSeparators()
+        {
+
+            Assert.AreEqual("Hhw", "Hello-hi-world".GetFirstLettersAfterSeparators(new char[] { '-', '+' }));
+            Assert.AreEqual("hhw", "hello-hi+world".GetFirstLettersAfterSeparators(new char[] { '-', '+' }));
+            Assert.AreEqual("hhw", "hello---hi++++world".GetFirstLettersAfterSeparators(new char[] { '-', '+' }));
+            Assert.AreEqual("HwIly", "Hello world,I love you 2 !".GetFirstLettersAfterSeparators(new char[] { ' ', ',' }), "Shoud ignore Non-Letter");
+            Assert.AreEqual("P", "100%Promo".GetFirstLettersAfterSeparators(new char[] { ' ', ',' }), "Shoud bypass Non-Letter");
+            Assert.AreEqual("YP", "Yeh 100%Promo".GetFirstLettersAfterSeparators(new char[] { ' ', ',' }), "Shoud bypass Non-Letter");
+        }
+
+        #endregion
+
+        [TestMethod]
+        public void StringExtensions_General_GetFirstLetterOfEachWord()
+        {
+            Assert.AreEqual("", " ".GetFirstLetterOfEachWord());
+            Assert.AreEqual("", "    ".GetFirstLetterOfEachWord());
+            Assert.AreEqual("Ab", "A b".GetFirstLetterOfEachWord());
+            Assert.AreEqual("", "1 2 3".GetFirstLetterOfEachWord());
+            Assert.AreEqual("", "1 0 0 %".GetFirstLetterOfEachWord());
+            Assert.AreEqual("Ad", "Abc def".GetFirstLetterOfEachWord());
+            Assert.AreEqual("AD", "ABC DEF".GetFirstLetterOfEachWord());
+            Assert.AreEqual("Adg", "Abc   def   ghi".GetFirstLetterOfEachWord());
+            Assert.AreEqual("HwIly", "Hello world, I love you 2 !".GetFirstLetterOfEachWord(), "Shoud ignore Non-Letter");
+            Assert.AreEqual("P", "100%Promo".GetFirstLetterOfEachWord(), "Shoud bypass Non-Letter");
+            Assert.AreEqual("YP", "Yeh 100%Promo".GetFirstLetterOfEachWord(), "Shoud bypass Non-Letter");
+        }
 
         #endregion
 
@@ -487,27 +626,27 @@ namespace StringExtensionsBspmLibraryTests
         [TestMethod]
         public void StringExtensions_General_KeepFirstLetterOnly()
         {
-            Assert.AreEqual(null, "".KeepFirstLetterOnly());
-            Assert.AreEqual(null, "125".KeepFirstLetterOnly());
-            Assert.AreEqual('A', "A".KeepFirstLetterOnly());
-            Assert.AreEqual('A', " A!".KeepFirstLetterOnly());
-            Assert.AreEqual('R', "Romain".KeepFirstLetterOnly());
-            Assert.AreEqual('G', "Gaëlle, ma chérie ! ".KeepFirstLetterOnly());
-            Assert.AreEqual('À', "À demain".KeepFirstLetterOnly());
-            Assert.AreEqual('s', "50% sur TOUT".KeepFirstLetterOnly());
+            Assert.AreEqual(null, "".FirstLetter());
+            Assert.AreEqual(null, "125".FirstLetter());
+            Assert.AreEqual('A', "A".FirstLetter());
+            Assert.AreEqual('A', " A!".FirstLetter());
+            Assert.AreEqual('R', "Romain".FirstLetter());
+            Assert.AreEqual('G', "Gaëlle, ma chérie ! ".FirstLetter());
+            Assert.AreEqual('À', "À demain".FirstLetter());
+            Assert.AreEqual('s', "50% sur TOUT".FirstLetter());
         }
 
         [TestMethod]
         public void StringExtensions_General_KeepLastLetterOnly()
         {
-            Assert.AreEqual(null, "".KeepLastLetterOnly());
-            Assert.AreEqual(null, "125".KeepLastLetterOnly());
-            Assert.AreEqual('A', "A".KeepLastLetterOnly());
-            Assert.AreEqual('A', " A!".KeepLastLetterOnly());
-            Assert.AreEqual('n', "Romain".KeepLastLetterOnly());
-            Assert.AreEqual('e', "Gaëlle, ma chérie ! ".KeepLastLetterOnly());
-            Assert.AreEqual('à', "C'est là ! ".KeepLastLetterOnly());
-            Assert.AreEqual('à', "Soldes : tout à 50%".KeepLastLetterOnly());
+            Assert.AreEqual(null, "".LastLetter());
+            Assert.AreEqual(null, "125".LastLetter());
+            Assert.AreEqual('A', "A".LastLetter());
+            Assert.AreEqual('A', " A!".LastLetter());
+            Assert.AreEqual('n', "Romain".LastLetter());
+            Assert.AreEqual('e', "Gaëlle, ma chérie ! ".LastLetter());
+            Assert.AreEqual('à', "C'est là ! ".LastLetter());
+            Assert.AreEqual('à', "Soldes : tout à 50%".LastLetter());
         }
 
 
