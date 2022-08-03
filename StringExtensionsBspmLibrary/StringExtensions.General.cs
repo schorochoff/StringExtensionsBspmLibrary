@@ -108,7 +108,7 @@ namespace StringExtensionsBspmLibrary
         public static string Resize(this string value, int count, bool isEndModified = true, char paddingChar = ' ')
         {
             if (count < 0)
-                throw new ArgumentOutOfRangeException($"{nameof(count)} can't be negative");
+                throw new ArgumentOutOfRangeException(nameof(count));
 
             if (string.IsNullOrEmpty(value))
             {
