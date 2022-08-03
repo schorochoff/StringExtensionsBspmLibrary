@@ -205,7 +205,7 @@ namespace StringExtensionsBspmLibrary
             else if (!targetCharacters.Any() || !stringToCapitalize.Intersect(targetCharacters).Any())
             {
                 var firstChar = value.Substring(0, 1).ToUpper();
-                var otherChars = value.Substring(1, value.Length-1);
+                var otherChars = value.Substring(1, value.Length - 1);
                 if (minimizeOtherChar)
                     otherChars = otherChars.ToLower();
                 return firstChar + otherChars;
@@ -259,17 +259,18 @@ namespace StringExtensionsBspmLibrary
 
         /// <summary>
         /// Returns string where : 
-        ///     - first letter of each line is capitalized
+        ///     - first character of each line is capitalized
         ///     - all the other letters minimized
+        ///     - trim space at the begining  at the end of the sentence
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         public static string CapitalizeEachLine(this string value, bool minimizeOtherChar = false)
         {
-            return CapitalizeAfterCharacter(value, '\n', minimizeOtherChar);
+            var sentencesTrimmed = value.Split('\n').Select(sentence => sentence.Trim());
+            var textTrimed = string.Join('\n', sentencesTrimmed);
+            return CapitalizeAfterCharacter(textTrimed, '\n', minimizeOtherChar);
         }
-
-
 
         #endregion
 
