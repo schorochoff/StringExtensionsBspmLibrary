@@ -418,36 +418,117 @@ namespace StringExtensionsBspmLibraryTests
 
         #endregion
 
-        //[TestMethod]
-        //public void StringExtensions_KeepLettersOnly()
-        //{
-        //    Assert.AreEqual("", "".KeepLettersOnly());
-        //    Assert.AreEqual("abcDEF", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepLettersOnly());
-        //}
+        [TestMethod]
+        public void StringExtensions_General_RemoveAccents()
+        {
+            Assert.AreEqual("", "".RemoveAccents());
+            Assert.AreEqual(" ", " ".RemoveAccents());
+            Assert.AreEqual("e", "e".RemoveAccents());
+            Assert.AreEqual("E", "E".RemoveAccents());
+            Assert.AreEqual("e", "é".RemoveAccents());
+            Assert.AreEqual("E", "É".RemoveAccents());
+            Assert.AreEqual("e", "è".RemoveAccents());
+            Assert.AreEqual("E", "È".RemoveAccents());
+            Assert.AreEqual("e", "ê".RemoveAccents());
+            Assert.AreEqual("E", "Ê".RemoveAccents());
+            Assert.AreEqual("$@|µ", "$@|µ".RemoveAccents());
+            Assert.AreEqual("Loic", "Loïc".RemoveAccents());
+            Assert.AreEqual("Gaelle, ma cherie ! Ou va tu comme ca ?", "Gaëlle, ma chérie ! Où va tu comme ça ?".RemoveAccents());
+        }
 
-        //[TestMethod]
-        //public void StringExtensions_KeepLastLetterOnly()
-        //{
-        //    Assert.AreEqual("", "".KeepLastLetterOnly());
-        //    Assert.AreEqual("n", "Romain".KeepLastLetterOnly());
-        //}
+        [TestMethod]
+        public void StringExtensions_General_KeepLettersOrDigitsOnly_WithAccent()
+        {
+            Assert.AreEqual("", "".KeepLettersOrDigitsOnly(withAccentedLetters: true));
+            Assert.AreEqual("", " ".KeepLettersOrDigitsOnly(withAccentedLetters: true));
+            Assert.AreEqual("Romain", "Romain".KeepLettersOrDigitsOnly(withAccentedLetters: true));
+            Assert.AreEqual("Romain1218", "Romain 12-18".KeepLettersOrDigitsOnly(withAccentedLetters: true));
+            Assert.AreEqual("Loïc", "Loïc".KeepLettersOrDigitsOnly(withAccentedLetters: true));
+            Assert.AreEqual("Loïc1218", "Loïc 12-18".KeepLettersOrDigitsOnly(withAccentedLetters: true));
+            Assert.AreEqual("1a2b3céèçàDEF456", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepLettersOrDigitsOnly(withAccentedLetters: true));
+        }
 
-        //[TestMethod]
-        //public void StringExtensions_KeepLettersOrDigitsOnly()
-        //{
-        //    Assert.AreEqual("", "".KeepLettersOrDigitsOnly());
-        //    Assert.AreEqual("1a2b3cDEF456", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepLettersOrDigitsOnly());
-        //}
+        [TestMethod]
+        public void StringExtensions_General_KeepLettersOrDigitsOnly_WithoutAccent()
+        {
+            Assert.AreEqual("", "".KeepLettersOrDigitsOnly(withAccentedLetters: false));
+            Assert.AreEqual("", " ".KeepLettersOrDigitsOnly(withAccentedLetters: false));
+            Assert.AreEqual("Romain", "Romain".KeepLettersOrDigitsOnly(withAccentedLetters: false));
+            Assert.AreEqual("Romain1218", "Romain 12-18".KeepLettersOrDigitsOnly(withAccentedLetters: false));
+            Assert.AreEqual("Loc", "Loïc".KeepLettersOrDigitsOnly(withAccentedLetters: false));
+            Assert.AreEqual("Loc1218", "Loïc 12-18".KeepLettersOrDigitsOnly(withAccentedLetters: false));
+            Assert.AreEqual("1a2b3cDEF456", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepLettersOrDigitsOnly(withAccentedLetters: false));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_KeepLettersOnly_WithAccent()
+        {
+            Assert.AreEqual("", "".KeepLettersOnly(withAccentedLetters: true));
+            Assert.AreEqual("", " ".KeepLettersOnly(withAccentedLetters: true));
+            Assert.AreEqual("Romain", "Romain".KeepLettersOnly(withAccentedLetters: true));
+            Assert.AreEqual("Romain", "Romain 12-18".KeepLettersOnly(withAccentedLetters: true));
+            Assert.AreEqual("Loïc", "Loïc".KeepLettersOnly(withAccentedLetters: true));
+            Assert.AreEqual("Loïc", "Loïc 12-18".KeepLettersOnly(withAccentedLetters: true));
+            Assert.AreEqual("abcéèçàDEF", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepLettersOnly(withAccentedLetters: true));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_KeepLettersOnly_WithoutAccent()
+        {
+            Assert.AreEqual("", "".KeepLettersOnly(withAccentedLetters: false));
+            Assert.AreEqual("", " ".KeepLettersOnly(withAccentedLetters: false));
+            Assert.AreEqual("Romain", "Romain".KeepLettersOnly(withAccentedLetters: false));
+            Assert.AreEqual("Romain", "Romain 12-18".KeepLettersOnly(withAccentedLetters: false));
+            Assert.AreEqual("Loc", "Loïc".KeepLettersOnly(withAccentedLetters: false));
+            Assert.AreEqual("Loc", "Loïc 12-18".KeepLettersOnly(withAccentedLetters: false));
+            Assert.AreEqual("abcDEF", "1a2b3c &é\"'(§è!çà)- DEF 456".KeepLettersOnly(withAccentedLetters: false));
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_KeepFirstLetterOnly()
+        {
+            Assert.AreEqual(null, "".KeepFirstLetterOnly());
+            Assert.AreEqual(null, "125".KeepFirstLetterOnly());
+            Assert.AreEqual('A', "A".KeepFirstLetterOnly());
+            Assert.AreEqual('A', " A!".KeepFirstLetterOnly());
+            Assert.AreEqual('R', "Romain".KeepFirstLetterOnly());
+            Assert.AreEqual('G', "Gaëlle, ma chérie ! ".KeepFirstLetterOnly());
+            Assert.AreEqual('À', "À demain".KeepFirstLetterOnly());
+            Assert.AreEqual('s', "50% sur TOUT".KeepFirstLetterOnly());
+        }
+
+        [TestMethod]
+        public void StringExtensions_General_KeepLastLetterOnly()
+        {
+            Assert.AreEqual(null, "".KeepLastLetterOnly());
+            Assert.AreEqual(null, "125".KeepLastLetterOnly());
+            Assert.AreEqual('A', "A".KeepLastLetterOnly());
+            Assert.AreEqual('A', " A!".KeepLastLetterOnly());
+            Assert.AreEqual('n', "Romain".KeepLastLetterOnly());
+            Assert.AreEqual('e', "Gaëlle, ma chérie ! ".KeepLastLetterOnly());
+            Assert.AreEqual('à', "C'est là ! ".KeepLastLetterOnly());
+            Assert.AreEqual('à', "Soldes : tout à 50%".KeepLastLetterOnly());
+        }
 
 
-        //[TestMethod]
-        //public void StringExtensions_Repeat()
-        //{
-        //    Assert.AreEqual("", "A".Repeat(-1));
-        //    Assert.AreEqual("", "A".Repeat(0));
-        //    Assert.AreEqual("A", "A".Repeat(1));
-        //    Assert.AreEqual("AAA", "A".Repeat(3));
-        //}
+
+
+        [TestMethod]
+        public void StringExtensions_General_Repeat()
+        {
+            Assert.AreEqual(null, "".Repeat(-1));
+            Assert.AreEqual("", "".Repeat(0));
+
+            Assert.AreEqual(null, "A".Repeat(-1));
+            Assert.AreEqual("", "A".Repeat(0));
+            Assert.AreEqual("A", "A".Repeat(1));
+            Assert.AreEqual("AAA", "A".Repeat(3));
+
+            Assert.AreEqual(null, "Hello world!".Repeat(-1));
+            Assert.AreEqual("", "Hello world!".Repeat(0));
+            Assert.AreEqual("Hello world!", "Hello world!".Repeat(1));
+            Assert.AreEqual("Hello world!Hello world!Hello world!", "Hello world!".Repeat(3));
+        }
 
         #endregion
 

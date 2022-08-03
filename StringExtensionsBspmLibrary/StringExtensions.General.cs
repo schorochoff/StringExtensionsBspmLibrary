@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -276,32 +277,46 @@ namespace StringExtensionsBspmLibrary
 
         #region Abreviations
 
-        ///// <summary>
-        ///// Return a string composed by the first letter of each word (words are separed by space or -).
-        ///// Returned string is in lower case.
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static string GetFirstLetterOfEachWord(this string value)
-        //{
-        //    var separators = new[] { ' ', '-' };
-        //    return GetFirstLetterOfEachWord(value, separators);
-        //}
+        /// <summary>
+        /// Return a string composed by the first letter of each word (words are separed by space or -).
+        /// Returned string is in lower case.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string GetFirstLetterOfEachWord(this string value)
+        {
+            var separators = new[] { ' ', '\t', '\n', '\r' };
+            return GetFirstLetterAfterSeparators(value, separators);
+        }
 
-        ///// <summary>
-        ///// Return a string composed by the first letter of each word 
-        ///// (the characters indicating the separation between words are defined in <paramref name="separators"/>).
-        ///// Returned string is in lower case.
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <param name="separators">The characters indicating the separation between words</param>
-        ///// <returns></returns>
-        //public static string GetFirstLetterOfEachWord(this string value, char[] separators)
-        //{
-        //    var words = value.Split(separators);
-        //    var firstLetters = words.Where(word => word.Length > 0).Select(word => word[0]);
-        //    return string.Join("", firstLetters).ToLower();
-        //}
+        /// <summary>
+        /// Return a string composed by the first LETTER of each word. 
+        /// (the characters indicating the separation between words are defined in <paramref name="separators"/>).
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="separators">The characters indicating the separation between words</param>
+        /// <returns></returns>
+        public static string GetFirstLetterAfterSeparators(this string value, char[] separators)
+        {
+            var firstLetters = value.Split(separators)
+                                    .Select(word => word.KeepFirstLetterOnly());
+            return string.Join("", firstLetters);
+        }
+
+        /// <summary>
+        /// Return a string composed by the first characters present after a separator <paramref name="separators"/>
+        /// 
+        /// Ex : GetFirstCharachtersAfterSeparators("Hello world,I love you", new char[] {' ', ','}) -> HwIly
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="separators"></param>
+        /// <returns></returns>
+        public static string GetFirstCharactersAfterSeparators(this string value, char[] separators)
+        {
+            var words = value.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            var firstCharacters = words.Select(word => word[0]);
+            return string.Join("", firstCharacters);
+        }
 
         #endregion
 
@@ -320,60 +335,108 @@ namespace StringExtensionsBspmLibrary
 
         #endregion
 
-        ///// <summary>
-        ///// Returns a string with <paramref name="value"/> repeated n times.
-        ///// Returns an empty string if n is negative. TODO
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <param name="n"></param>
-        ///// <returns></returns>
-        //public static string Repeat(this string value, int n)
-        //{
-        //    if (n <= 0)
-        //        return string.Empty;
-        //    else
-        //        return string.Concat(Enumerable.Repeat(value, n));
-        //}
+        /// <summary>
+        /// Remove accent from a text
+        /// 
+        /// Ex :Gaelle, ma cherie ! Ou va tu comme ca ? -> Gaëlle, ma chérie ! Où va tu comme ça ?
+        /// 
+        /// Source: http://archives.miloush.net/michkap/archive/2007/05/14/2629747.html
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string RemoveAccents(this string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder(capacity: normalizedString.Length);
 
-        ///// <summary>
-        ///// "ABC-123" => "ABC"
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static string KeepLettersOnly(this string value)
-        //{
-        // Todo Accent
-        //    return Regex.Replace(value, "[^a-zA-Z]", string.Empty);
-        //}
+            for (int i = 0; i < normalizedString.Length; i++)
+            {
+                char c = normalizedString[i];
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
 
-        ///// <summary>
-        ///// "ABC-123" => "C"
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static string KeepLastLetterOnly(this string value)
-        //{
-        //    value = value.KeepLettersOnly();
-        //    if (value.Any() == false)
-        //        return string.Empty;
+            return stringBuilder
+                .ToString()
+                .Normalize(NormalizationForm.FormC);
 
-        //    return value[value.Length - 1].ToString();
-        //}
+        }
+
+        /// <summary>
+        /// "ABC-123" => "ABC123"
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="withAccentedLetters">Indicate if letters with an accent should be keeped</param>
+        /// <returns></returns>
+        public static string KeepLettersOrDigitsOnly(this string value, bool withAccentedLetters = true)
+        {
+            if (withAccentedLetters)
+                return Regex.Replace(value, @"[^\w]*[_]*", string.Empty);
+            else
+                return Regex.Replace(value, "[^0-9a-zA-Z]", string.Empty);
+        }
+
+        /// <summary>
+        /// "ABC-123" => "ABC"
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="withAccentedLetters">Indicate if letters with an accent should be keeped</param>
+        /// <returns></returns>
+        public static string KeepLettersOnly(this string value, bool withAccentedLetters = true)
+        {
+            return Regex.Replace(value.KeepLettersOrDigitsOnly(withAccentedLetters), "[0-9]", string.Empty);
+        }
+
+        /// <summary>
+        /// "123-ABC" => 'A'
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static char? KeepFirstLetterOnly(this string value)
+        {
+            var letters = value.KeepLettersOnly();
+            if (string.IsNullOrEmpty(letters))
+                return null;
+            else
+                return
+                    letters.First();
+        }
+
+        /// <summary>
+        /// "ABC-123" => 'C'
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static char? KeepLastLetterOnly(this string value)
+        {
+            var letters = value.KeepLettersOnly();
+            if (string.IsNullOrEmpty(letters))
+                return null;
+            else
+                return
+                    letters.Last();
+        }
 
 
-
-        ///// <summary>
-        ///// "ABC-123" => "ABC123"
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static string KeepLettersOrDigitsOnly(this string value)
-        //{
-        //    if (string.IsNullOrEmpty(value))
-        //        return string.Empty;
-
-        //    return Regex.Replace(value, "[^0-9a-zA-Z]", string.Empty);
-        //}
+        /// <summary>
+        /// Returns a string with <paramref name="value"/> repeated <paramref name="n"/> times.
+        /// Returns an null if <paramref name="n"/> is negative. 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static string? Repeat(this string value, int n)
+        {
+            if (n < 0)
+                return null;
+            if (n == 0)
+                return string.Empty;
+            else
+                return string.Concat(Enumerable.Repeat(value, n));
+        }
 
         #endregion
 
