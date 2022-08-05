@@ -177,8 +177,6 @@ namespace StringExtensionsBspmLibrary
             return Regex.Replace(value, @"^\s*$[\r\n]*", string.Empty, RegexOptions.Multiline).Trim('\r', '\n');
         }
 
-        //todo clean space
-
         #endregion
 
         #region Case
@@ -345,16 +343,16 @@ namespace StringExtensionsBspmLibrary
 
         #region Path
 
-        ///// <summary>
-        ///// Returns the string value with a trailing slash if none exists already.
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <returns></returns>
-        //public static string WithTrailingSlash(this string value)
-        //{
-        //    var slash = value.EndsWith("/") ? "" : "/";
-        //    return $"{value}{slash}";
-        //}
+        /// <summary>
+        /// Returns the string value with a trailing slash if none exists already.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string WithTrailingSlash(this string value)
+        {
+            var slash = value.EndsWith("/") ? "" : "/";
+            return $"{value}{slash}";
+        }
 
         #endregion
 

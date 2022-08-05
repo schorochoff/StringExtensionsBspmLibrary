@@ -585,6 +585,20 @@ namespace StringExtensionsBspmLibraryTests
 
         #region Path
 
+        [TestMethod]
+        public void StringExtensions_General_WithTrailingSlash() 
+        {
+            Assert.AreEqual("/", "".WithTrailingSlash()); 
+            Assert.AreEqual("/", "/".WithTrailingSlash());
+            Assert.AreEqual("hello/", "hello".WithTrailingSlash());
+            Assert.AreEqual("hello/", "hello/".WithTrailingSlash());
+            Assert.AreEqual("hello world/", "hello world".WithTrailingSlash());
+            Assert.AreEqual("dir/subdir/subsubdir/", "dir/subdir/subsubdir".WithTrailingSlash());
+            Assert.AreEqual("dir/subdir/subsubdir/", "dir/subdir/subsubdir/".WithTrailingSlash());
+            Assert.AreEqual("./subsubdir/", "./subsubdir".WithTrailingSlash());
+            Assert.AreEqual("dir/subdir/subsubdir///", "dir/subdir/subsubdir///".WithTrailingSlash());
+        }
+
         #endregion
 
         [TestMethod]
